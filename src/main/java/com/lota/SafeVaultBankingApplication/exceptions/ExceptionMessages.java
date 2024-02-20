@@ -7,7 +7,9 @@ public enum ExceptionMessages {
 
     AUTHENTICATION_FAILURE("FAiled to authenticate request"),
 
-    UNSUPPORTED_AUTHENTICATION_TYPE("Unsupported authentication type");
+    UNSUPPORTED_AUTHENTICATION_TYPE("Unsupported authentication type"),
+
+    USER_NOT_FOUND("User with email %s not found");
 
     private final String message;
 
