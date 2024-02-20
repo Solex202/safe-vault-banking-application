@@ -32,6 +32,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        SafeVaultUser user = getUserBy(username);
         return null;
     }
 }
