@@ -60,6 +60,8 @@ public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticatio
         LoginResponse authenticationResponse = new LoginResponse();
         authenticationResponse.setToken(token);
         response.setContentType(APPLICATION_JSON);
+        response.getOutputStream().write(mapper.writeValueAsBytes(authenticationResponse));
+        response.flushBuffer();
 
 
         super.successfulAuthentication(request, response, chain, authResult);
