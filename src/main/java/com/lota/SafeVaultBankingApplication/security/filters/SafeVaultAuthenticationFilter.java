@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.AUTHENTICATION_FAILURE;
+import static com.lota.SafeVaultBankingApplication.utils.AppUtil.APPLICATION_JSON;
 
 //@Component
 @AllArgsConstructor
@@ -53,7 +54,10 @@ public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticatio
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String token = jwtService.generateTokenFor(authResult.getPrincipal());
+        String token = jwtService.generateTokenFor(authResult.getPrincipal().toString());
+
+        response.setContentType(APPLICATION_JSON);
+        response.setStatus();
 
         super.successfulAuthentication(request, response, chain, authResult);
     }
