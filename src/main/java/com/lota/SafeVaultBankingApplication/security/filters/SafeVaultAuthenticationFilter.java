@@ -7,7 +7,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -22,10 +24,15 @@ import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.
 @AllArgsConstructor
 public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
      private static final ObjectMapper mapper = new ObjectMapper();
+
+     private AuthenticationManager authenticationManager;
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         LoginRequest loginRequest = extractAuthenticationCredentialsFrom(request);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+
+        Authentication authenticationRequest = authenticationManager.authenticate(authentication);
     }
 
     private static LoginRequest extractAuthenticationCredentialsFrom(HttpServletRequest request) {
