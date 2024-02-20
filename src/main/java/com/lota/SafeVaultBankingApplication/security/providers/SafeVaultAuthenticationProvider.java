@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.INCORRECT_CREDENTIALS;
+
 @AllArgsConstructor
 public class SafeVaultAuthenticationProvider implements AuthenticationProvider {
 
@@ -26,14 +28,14 @@ public class SafeVaultAuthenticationProvider implements AuthenticationProvider {
 
         boolean isPasswordValid = encoder.matches(userDetails.getPassword(), password);
         if(isPasswordValid) return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),null, userDetails.getAuthorities());
-        throw new BadCredentialsException(INCORRECT_CREDENTIALS);
+        throw new BadCredentialsException(INCORRECT_CREDENTIALS.toString());
         }
-
-
-    }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return false;
     }
+
+
+
 }
