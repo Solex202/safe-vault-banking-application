@@ -5,6 +5,8 @@ import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SafeVaultUserServiceImpl implements SafeVaultUserService{
+public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetailsService {
 
     private final SafeVaultUserRepository userRepository;
     @Override
@@ -26,5 +28,10 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService{
                 .orElseThrow(()-> new UsernameNotFoundException(
                         String.format(USER_NOT_FOUND.getMessage(), email)
                 ));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }
