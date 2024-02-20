@@ -1,25 +1,40 @@
 package com.lota.SafeVaultBankingApplication.security.filters;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lota.SafeVaultBankingApplication.dtos.request.LoginRequest;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.InputStream;
 
-@Component
+import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.AUTHENTICATION_FAILURE;
+
+//@Component
 @AllArgsConstructor
 public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+     private static final ObjectMapper mapper = new ObjectMapper();
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
+        LoginRequest loginRequest = extractAuthenticationCredentialsFrom(request);
+    }
 
-        return super.attemptAuthentication(request, response);
+    private static LoginRequest extractAuthenticationCredentialsFrom(HttpServletRequest request) {
+        try(InputStream inputStream = request.getInputStream()){
+            byte [] requestBody = inputStream.readAllBytes();
+            return mapper.readValue(requestBody, LoginRequest.class);
+        }catch (IOException exception){
+            throw new BadCredentialsException(AUTHENTICATION_FAILURE.getMessage());
+        }
     }
 
     @Override
