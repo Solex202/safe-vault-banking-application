@@ -9,6 +9,11 @@ import org.springframework.security.core.AuthenticationException;
 public class SafeVaultAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
+        String email = authentication.getPrincipal().toString();
+        String password = authentication.getCredentials().toString();
+
+
         return null;
     }
 
