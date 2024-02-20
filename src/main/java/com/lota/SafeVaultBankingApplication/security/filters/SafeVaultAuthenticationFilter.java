@@ -2,6 +2,7 @@ package com.lota.SafeVaultBankingApplication.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lota.SafeVaultBankingApplication.dtos.request.LoginRequest;
+import com.lota.SafeVaultBankingApplication.dtos.response.ApiResponse;
 import com.lota.SafeVaultBankingApplication.dtos.response.LoginResponse;
 import com.lota.SafeVaultBankingApplication.security.services.SafeVaultJWTService;
 import jakarta.servlet.FilterChain;
@@ -21,8 +22,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.AUTHENTICATION_FAILURE;
-import static com.lota.SafeVaultBankingApplication.utils.AppUtil.APPLICATION_JSON;
+import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
+import static com.lota.SafeVaultBankingApplication.utils.AppUtil.*;
 
 //@Component
 @AllArgsConstructor
@@ -62,13 +63,14 @@ public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticatio
         response.setContentType(APPLICATION_JSON);
         response.getOutputStream().write(mapper.writeValueAsBytes(authenticationResponse));
         response.flushBuffer();
-
-
-        super.successfulAuthentication(request, response, chain, authResult);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        ApiResponse<String> authResponse = new ApiResponse<>();
+        authResponse.setData(failed.getMessage());
+        response.setContentType(APPLICATION_JSON);
+        response.getOutputStream().write(mapper.writeValueAsBytes(authResponse));
+        response.flushBuffer();
     }
 }
