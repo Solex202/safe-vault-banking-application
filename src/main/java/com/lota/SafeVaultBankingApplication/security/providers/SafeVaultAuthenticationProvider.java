@@ -33,7 +33,7 @@ public class SafeVaultAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return false;
+        return UsernamePasswordAuthenticationToken.class.equals(authentication);
     }
 
 
