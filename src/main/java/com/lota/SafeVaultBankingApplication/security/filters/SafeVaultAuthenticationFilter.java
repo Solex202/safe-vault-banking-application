@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +33,10 @@ public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticatio
         LoginRequest loginRequest = extractAuthenticationCredentialsFrom(request);
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
 
-        Authentication authenticationRequest = authenticationManager.authenticate(authentication);
+        Authentication authenticationResult = authenticationManager.authenticate(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authenticationResult);
+
+        return authenticationResult;
     }
 
     private static LoginRequest extractAuthenticationCredentialsFrom(HttpServletRequest request) {
