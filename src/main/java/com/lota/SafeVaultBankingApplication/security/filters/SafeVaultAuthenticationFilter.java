@@ -2,6 +2,7 @@ package com.lota.SafeVaultBankingApplication.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lota.SafeVaultBankingApplication.dtos.request.LoginRequest;
+import com.lota.SafeVaultBankingApplication.dtos.response.LoginResponse;
 import com.lota.SafeVaultBankingApplication.security.services.SafeVaultJWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -56,8 +57,10 @@ public class SafeVaultAuthenticationFilter extends UsernamePasswordAuthenticatio
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String token = jwtService.generateTokenFor(authResult.getPrincipal().toString());
 
+        LoginResponse authenticationResponse = new LoginResponse();
+        authenticationResponse.setToken(token);
         response.setContentType(APPLICATION_JSON);
-        response.setStatus();
+
 
         super.successfulAuthentication(request, response, chain, authResult);
     }
