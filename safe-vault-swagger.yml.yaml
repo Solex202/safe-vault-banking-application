@@ -1,0 +1,10 @@
+swagger: "2.0"
+info:
+  title: Title
+  description: Safe Vault API
+  version: 1.0.0
+host: www
+schemes:
+  - https
+paths:
+  
