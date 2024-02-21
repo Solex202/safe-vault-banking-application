@@ -1,10 +1,16 @@
 swagger: "2.0"
 info:
-  title: Title
-  description: Safe Vault API
+  title: Safe Vault API
+  description: This API allows customers to create , transfer and receive money and also do other banking transactions
   version: 1.0.0
-host: www
+host: localhost:9639
 schemes:
-  - https
-paths:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+#paths:
+
   
