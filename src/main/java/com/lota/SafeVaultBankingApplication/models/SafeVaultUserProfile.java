@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 @Data
-@AllArgsConstructor@NoArgsConstructor@Builder
+@AllArgsConstructor@NoArgsConstructor
+@Builder
 public class SafeVaultUserProfile {
 
     @Id
@@ -28,6 +31,8 @@ public class SafeVaultUserProfile {
     private String employerName;
     private String employerContact;
 
-    private     NextOfKin nextOfKin;
+    private  NextOfKin nextOfKin;
     private String bvn;
+    @DBRef
+    private SafeVaultUser safeVaultUser;
 }
