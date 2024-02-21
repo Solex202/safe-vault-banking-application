@@ -15,7 +15,6 @@ public class SafeVaultAuthenticationManager implements AuthenticationManager {
 
     private final AuthenticationProvider authenticationProvider;
 
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         boolean isAuthenticationSupported = authenticationProvider.supports(authentication.getClass());

@@ -1,4 +1,4 @@
-package com.lota.SafeVaultBankingApplication.config;
+package com.lota.SafeVaultBankingApplication.security.config;
 
 
 import org.springframework.context.annotation.Bean;

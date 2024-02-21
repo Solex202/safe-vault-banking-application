@@ -3,7 +3,6 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

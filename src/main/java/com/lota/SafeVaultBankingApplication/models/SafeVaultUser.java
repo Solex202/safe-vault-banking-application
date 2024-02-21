@@ -17,8 +17,8 @@ public class SafeVaultUser {
     private String id;
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
 
     private Set<Authority> authorities;
 }

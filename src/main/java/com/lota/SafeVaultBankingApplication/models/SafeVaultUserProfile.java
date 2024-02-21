@@ -26,7 +26,8 @@ public class SafeVaultUserProfile {
     //employment information
     private String occupation;
     private String employerName;
+    private String employerContact;
 
-    private NextOfKin nextOfKin;
+    private     NextOfKin nextOfKin;
     private String bvn;
 }
