@@ -31,7 +31,7 @@ public class SafeVaultJWTServiceImpl implements SafeVaultJWTService{
     }
 
     @Override
-    public UserDetails extraUserDetailsFromToken(String token) {
+    public UserDetails extraUserDetailsFrom(String token) {
         return null;
     }
 }
