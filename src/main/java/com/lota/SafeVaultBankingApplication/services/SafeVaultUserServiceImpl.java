@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.USER_NOT_FOUND;
+import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 
 @Service
 @RequiredArgsConstructor
