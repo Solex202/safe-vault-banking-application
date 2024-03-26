@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 
@@ -27,5 +28,10 @@ public class SafeVaultJWTServiceImpl implements SafeVaultJWTService{
                 .withExpiresAt(now().plusSeconds(Long.parseLong(jwtTokenValidity)))
                 .withIssuedAt(now())
                 .sign(Algorithm.HMAC512(jwtSigningKey));
+    }
+
+    @Override
+    public UserDetails extraUserDetailsFromToken(String token) {
+        return null;
     }
 }
