@@ -27,7 +27,7 @@ public class SafeVaultJWTServiceImpl implements SafeVaultJWTService{
     @Value("${jwt.signing.key}")
     private String jwtTokenValidity;
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
     @Override
     public String generateTokenFor(String email) {
         return JWT.create()
