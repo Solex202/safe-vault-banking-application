@@ -1,6 +1,7 @@
 package com.lota.SafeVaultBankingApplication.security.filters;
 
 import com.lota.SafeVaultBankingApplication.security.services.SafeVaultJWTService;
+import com.mongodb.client.model.Collation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+
+import static com.lota.SafeVaultBankingApplication.security.SecurityUtils.getAuthenticationWhiteList;
 
 @AllArgsConstructor
 public class SafeVaultAuthorizationFilter extends OncePerRequestFilter {
@@ -17,5 +22,12 @@ public class SafeVaultAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        Collection<String> authenticationWhiteList = getAuthenticationWhiteList();
+
+        boolean isEndpointPublic = authenticationWhiteList.contains(request.getServletPath());
+
+        if (isEndpointPublic){
+
+        }
     }
 }
