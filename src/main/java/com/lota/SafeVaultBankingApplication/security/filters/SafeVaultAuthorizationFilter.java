@@ -36,7 +36,10 @@ public class SafeVaultAuthorizationFilter extends OncePerRequestFilter {
     }
 
     private String extractTokenFrom(String authorizationHeader) {
+        boolean isAuthorizationHeaderPresent = authorizationHeader != null;
+        String token = null;
 
-
+        if (isAuthorizationHeaderPresent) token = authorizationHeader.substring("Bearer".length());
+        return token;
     }
 }
