@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -32,7 +33,13 @@ public class SafeVaultAuthorizationFilter extends OncePerRequestFilter {
         else{
             String authorizationHeader = request.getHeader("Authorization");
             String token = extractTokenFrom(authorizationHeader);
+            UserDetails userDetails = safeVaultJWTService.extraUserDetailsFrom(token);
+            authorize(userDetails);
+            filterChain.doFilter(request, response);
         }
+    }
+
+    private void authorize(UserDetails userDetails) {
     }
 
     private String extractTokenFrom(String authorizationHeader) {
