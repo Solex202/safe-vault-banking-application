@@ -1,6 +1,5 @@
 package com.lota.SafeVaultBankingApplication.security.config;
 
-import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.security.filters.SafeVaultAuthenticationFilter;
 import com.lota.SafeVaultBankingApplication.security.filters.SafeVaultAuthorizationFilter;
 import com.lota.SafeVaultBankingApplication.security.services.SafeVaultJWTService;
@@ -46,7 +45,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(c->c.anyRequest().hasAnyAuthority(USER.name()))
                 .build();
     }
-
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
