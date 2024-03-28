@@ -27,7 +27,16 @@ public class SafeVaultAuthorizationFilter extends OncePerRequestFilter {
         boolean isEndpointPublic = authenticationWhiteList.contains(request.getServletPath());
 
         if (isEndpointPublic){
-
+            filterChain.doFilter(request, response);
         }
+        else{
+            String authorizationHeader = request.getHeader("Authorization");
+            String token = extractTokenFrom(authorizationHeader);
+        }
+    }
+
+    private String extractTokenFrom(String authorizationHeader) {
+
+
     }
 }
