@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
@@ -17,7 +18,7 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.lota.SafeVaultBankingApplication.utils.AppUtil.EMAIL;
 import static java.time.Instant.now;
 
-@Configuration
+@Component
 @RequiredArgsConstructor
 public class SafeVaultJWTServiceImpl implements SafeVaultJWTService{
 
