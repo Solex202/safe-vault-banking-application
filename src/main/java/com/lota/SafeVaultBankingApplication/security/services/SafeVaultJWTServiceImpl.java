@@ -7,12 +7,9 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.lota.SafeVaultBankingApplication.utils.AppUtil.EMAIL;
