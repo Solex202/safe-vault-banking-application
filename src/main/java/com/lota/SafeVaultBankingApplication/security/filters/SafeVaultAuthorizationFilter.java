@@ -27,7 +27,6 @@ public class SafeVaultAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         Collection<String> authenticationWhiteList = getAuthenticationWhiteList();
-
         boolean isEndpointPublic = authenticationWhiteList.contains(request.getServletPath());
 
         if (isEndpointPublic){
