@@ -2,6 +2,7 @@ package com.lota.SafeVaultBankingApplication.security.config;
 
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.security.filters.SafeVaultAuthenticationFilter;
+import com.lota.SafeVaultBankingApplication.security.filters.SafeVaultAuthorizationFilter;
 import com.lota.SafeVaultBankingApplication.security.services.SafeVaultJWTService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,7 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .sessionManagement(c->c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAt(authenticationFilter, BasicAuthenticationFilter.class)
-                .addFilterBefore(new SafeVaultAuthenticationFilter(jwtService), SafeVaultAuthenticationFilter.class)
+                .addFilterBefore(new SafeVaultAuthorizationFilter(jwtService), SafeVaultAuthenticationFilter.class)
                 .authorizeHttpRequests(c->c.requestMatchers( "/auth/login", "/users", "/v3/api-docs/**", "/v3/api-docs.yaml", "/h2-console/**").permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll())
                 .authorizeHttpRequests(c->c.requestMatchers(GET, "/api/v1/reservation").hasAnyAuthority(USER.name())
