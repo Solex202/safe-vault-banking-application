@@ -1,7 +1,6 @@
 package com.lota.SafeVaultBankingApplication.security.filters;
 
 import com.lota.SafeVaultBankingApplication.security.services.SafeVaultJWTService;
-import com.mongodb.client.model.Collation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 
 import static com.lota.SafeVaultBankingApplication.security.SecurityUtils.getAuthenticationWhiteList;
 
