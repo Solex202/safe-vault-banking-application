@@ -6,8 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface SafeVaultUserRepository extends MongoRepository<SafeVaultUser, String> {
-
-
-
     Optional<SafeVaultUser> findByEmail(String email);
 }
