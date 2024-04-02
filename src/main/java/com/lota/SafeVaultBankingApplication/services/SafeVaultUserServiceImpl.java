@@ -7,6 +7,7 @@ import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,11 +42,18 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     @Override
     public void registerUser(RegisterRequest request) {
+        validate(request.getPhoneNumber());
 
     }
 
-    private void validatePhoneNumber(String phoneNumber){
+    private void validate(String phoneNumber){
         String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
         if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
+    }
+
+    private void sendCodeTo(String phoneNumber){
+
+        String randomString = RandomString.make(6);
+
     }
 }
