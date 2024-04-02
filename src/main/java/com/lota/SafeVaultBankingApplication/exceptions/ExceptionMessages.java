@@ -13,7 +13,9 @@ public enum ExceptionMessages {
 
     INCORRECT_CREDENTIALS("Incorrect credentials supplied"),
 
-    INVALID_PHONENUMBER("Phone number is not valid");
+    INVALID_PHONENUMBER("Phone number is not valid"),
+
+    INCORRECT_EMAIL("Email is incorrect");
 
     private final String message;
 
