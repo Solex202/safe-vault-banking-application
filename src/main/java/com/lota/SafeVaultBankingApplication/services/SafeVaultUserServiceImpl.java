@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 
 @Service
@@ -43,13 +45,18 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     @Override
     public void registerUser(RegisterRequest request) {
 
+        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) throw new AppException("An account already exists with this phone number");
+
         SafeVaultUser user = new SafeVaultUser();
 //        validatePhoneNumber(request.getPhoneNumber());
         SmsSender.sendSmsTo(request.getPhoneNumber());
+
+        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
         validateEmail(request.getEmail());
 
         user.setEmail(request.getEmail());
         user.setPhoneNumber(request.getPhoneNumber());
+        user.setPassword(request.getPasscode());
 
         userRepository.save(user);
     }
