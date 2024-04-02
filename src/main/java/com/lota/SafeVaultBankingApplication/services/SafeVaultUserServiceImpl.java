@@ -8,7 +8,6 @@ import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,7 +43,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     @Override
     public void registerUser(RegisterRequest request) {
         validate(request.getPhoneNumber());
-        SmsSender.twillo(request.getPhoneNumber());
+        SmsSender.sendSmsTo(request.getPhoneNumber());
 
 
     }
@@ -55,9 +54,4 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     }
 
-    private void sendCodeTo(String phoneNumber){
-
-
-
-    }
 }
