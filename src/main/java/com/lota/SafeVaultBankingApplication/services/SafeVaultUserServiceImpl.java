@@ -1,5 +1,7 @@
 package com.lota.SafeVaultBankingApplication.services;
 
+import com.lota.SafeVaultBankingApplication.dtos.request.RegisterRequest;
+import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
@@ -23,6 +25,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         return findUserByEmail(searchParam);
     }
 
+
     private SafeVaultUser findUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new UsernameNotFoundException(
@@ -34,5 +37,15 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SafeVaultUser user = getUserBy(username);
         return new Principal(user);
+    }
+
+    @Override
+    public void registerUser(RegisterRequest request) {
+
+    }
+
+    private void validatePhoneNumber(String phoneNumber){
+        String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
+        if (!phoneNumber.matches(regex)) throw new AppException("");
     }
 }
