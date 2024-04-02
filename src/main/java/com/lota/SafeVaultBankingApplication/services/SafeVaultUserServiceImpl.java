@@ -44,12 +44,14 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public void registerUser(RegisterRequest request) {
 
         SafeVaultUser user = new SafeVaultUser();
-        validatePhoneNumber(request.getPhoneNumber());
+//        validatePhoneNumber(request.getPhoneNumber());
         SmsSender.sendSmsTo(request.getPhoneNumber());
         validateEmail(request.getEmail());
 
         user.setEmail(request.getEmail());
         user.setPhoneNumber(request.getPhoneNumber());
+
+        userRepository.save(user);
     }
 
     private void validatePhoneNumber(String phoneNumber){
