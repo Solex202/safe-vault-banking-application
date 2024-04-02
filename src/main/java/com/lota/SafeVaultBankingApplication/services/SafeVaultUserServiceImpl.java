@@ -46,6 +46,6 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     private void validatePhoneNumber(String phoneNumber){
         String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
-        if (!phoneNumber.matches(regex)) throw new AppException("");
+        if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
     }
 }
