@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication.services;
 
+import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.dtos.request.RegisterRequest;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
@@ -43,17 +44,20 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     @Override
     public void registerUser(RegisterRequest request) {
         validate(request.getPhoneNumber());
+        SmsSender.twillo(request.getPhoneNumber());
+
 
     }
 
     private void validate(String phoneNumber){
         String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
         if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
+
     }
 
     private void sendCodeTo(String phoneNumber){
 
-        String randomString = RandomString.make(6);
+
 
     }
 }
