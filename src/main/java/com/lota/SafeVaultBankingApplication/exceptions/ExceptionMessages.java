@@ -11,7 +11,9 @@ public enum ExceptionMessages {
 
     USER_NOT_FOUND("User with email %s not found"),
 
-    INCORRECT_CREDENTIALS("Incorrect credentials supplied");
+    INCORRECT_CREDENTIALS("Incorrect credentials supplied"),
+
+    INVALID_PHONENUMBER("Phone number is not valid");
 
     private final String message;
 
