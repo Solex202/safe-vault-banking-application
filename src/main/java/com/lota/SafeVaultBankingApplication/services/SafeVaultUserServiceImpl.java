@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
@@ -57,6 +58,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         user.setEmail(request.getEmail());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(request.getPasscode());
+        user.setDateCreated(LocalDateTime.now());
 
         userRepository.save(user);
     }

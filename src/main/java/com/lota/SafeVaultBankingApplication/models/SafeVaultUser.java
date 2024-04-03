@@ -4,6 +4,7 @@ import com.lota.SafeVaultBankingApplication.models.enums.Authority;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -20,6 +21,7 @@ public class SafeVaultUser {
     private String firstname;
     private String lastname;
     private String phoneNumber;
+    private LocalDateTime dateCreated;
 
     private Set<Authority> authorities;
 }
