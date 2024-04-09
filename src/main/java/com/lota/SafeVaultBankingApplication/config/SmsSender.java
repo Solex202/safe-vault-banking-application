@@ -4,11 +4,6 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -21,7 +16,6 @@ public class SmsSender {
 
     @Value("${twillo.key}")
     private static String AUTH_TOKEN;
-    // Your Twilio Account SID and Auth Token
 
 
     private static String generateToken() {
