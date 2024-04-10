@@ -24,6 +24,7 @@ import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.
 public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetailsService {
 
     private final SafeVaultUserRepository userRepository;
+    private final SmsSender smsSender;
     @Override
     public SafeVaultUser getUserBy(String searchParam) {
         return findUserByEmail(searchParam);
@@ -50,7 +51,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
         SafeVaultUser user = new SafeVaultUser();
 //        validatePhoneNumber(request.getPhoneNumber());
-        SmsSender.sendSmsTo(request.getPhoneNumber());
+        smsSender.sendSmsTo(request.getPhoneNumber());
 
         if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
         validateEmail(request.getEmail());
