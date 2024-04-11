@@ -22,6 +22,9 @@ public class SafeVaultUser {
     private String lastname;
     private String phoneNumber;
     private LocalDateTime dateCreated;
+    private String otp;
+    private LocalDateTime otpExpiryTime;
+    private LocalDateTime dateUpdated;
 
     private Set<Authority> authorities;
 }
