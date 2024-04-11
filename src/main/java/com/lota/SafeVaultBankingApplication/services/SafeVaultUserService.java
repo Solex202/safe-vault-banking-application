@@ -7,7 +7,7 @@ public interface SafeVaultUserService {
 
     SafeVaultUser getUserBy(String searchParam);
 
-    void registerUser(RegisterRequest request);
+    void registerUser(String phoneNumber);
 
 
 }
