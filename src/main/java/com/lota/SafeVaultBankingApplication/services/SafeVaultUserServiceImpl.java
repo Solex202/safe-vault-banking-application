@@ -74,7 +74,4 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         String regex ="^(.+)@(\\S+)$";
         if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.toString());
      }
-
-
-
 }
