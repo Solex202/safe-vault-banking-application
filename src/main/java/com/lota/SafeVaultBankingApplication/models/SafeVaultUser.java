@@ -23,6 +23,7 @@ public class SafeVaultUser {
     private String phoneNumber;
     private LocalDateTime dateCreated;
     private String otp;
+    private boolean isOtpVerified;
     private LocalDateTime otpCreatedTime;
     private LocalDateTime dateUpdated;
 
