@@ -43,12 +43,11 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
 
     @Override
-    public void registerUser(String  phoneNumber) {
+    public void processUserPhoneNumber(String  phoneNumber) {
         boolean isPhoneNumberExists = userRepository.existsByPhoneNumber(phoneNumber);
 
         if (isPhoneNumberExists) throw new AppException("An account already exists with this phone number");
 
-//        validatePhoneNumberLength(phoneNumber);
         SafeVaultUser user = new SafeVaultUser();
 
         String userOtp = getUserOtp();
