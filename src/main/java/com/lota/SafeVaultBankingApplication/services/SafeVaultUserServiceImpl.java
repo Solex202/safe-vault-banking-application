@@ -1,7 +1,6 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
-import com.lota.SafeVaultBankingApplication.dtos.request.RegisterRequest;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 
@@ -50,19 +48,26 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
         if (isPhoneNumberExists) throw new AppException("An account already exists with this phone number");
 
-        validatePhoneNumber(phoneNumber);
+//        validatePhoneNumberLength(phoneNumber);
         SafeVaultUser user = new SafeVaultUser();
+
+        String userOtp = getUserOtp();
         smsSender.sendSmsTo(phoneNumber);
 
 //        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
 //        validateEmail(request.getEmail());
 
         user.setPhoneNumber(phoneNumber);
-        user.setDateCreated(LocalDateTime.now());
+        user.setOtp(userOtp);
+        user.setOtpCreatedTime(LocalDateTime.now());
         userRepository.save(user);
     }
 
-    private void validatePhoneNumber(String phoneNumber){
+    private String getUserOtp(){
+        return smsSender.generateToken();
+    }
+
+    private void validatePhoneNumberLength(String phoneNumber){
 //        String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
 //        if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
 
