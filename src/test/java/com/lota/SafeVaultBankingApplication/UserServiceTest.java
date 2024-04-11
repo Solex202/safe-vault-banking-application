@@ -19,11 +19,11 @@ public class UserServiceTest {
     @Test
     void testRegisterUser(){
 
-        RegisterRequest request = RegisterRequest.builder().email("onwuka@gmail.com").phoneNumber("+2349034653698").build();
+//        RegisterRequest request = RegisterRequest.builder().email("onwuka@gmail.com").phoneNumber("+2349034653698").build();
 
         //when
-        safeVaultUserService.registerUser(request);
+        safeVaultUserService.registerUser("+2349034653698");
 
-        assertThat(request.getEmail(), is("onwuka@gmail.com"));
+//        assertThat(request.getEmail(), is("onwuka@gmail.com"));
     }
 }
