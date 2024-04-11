@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 
@@ -60,6 +61,23 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         user.setOtp(userOtp);
         user.setOtpCreatedTime(LocalDateTime.now());
         userRepository.save(user);
+    }
+
+    @Override
+    public String validateOtp(String otp, String userId) {
+
+        SafeVaultUser safeVaultUser = getUserBy(userId);
+        if (safeVaultUser.getOtp().isEmpty()) throw new AppException("");
+
+        final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
+
+        if(timeElapsed > 10) throw new AppException("");
+
+        if(!safeVaultUser.getOtp().matches(otp)) throw new AppException("");
+
+        safeVaultUser.setOtpVerified(true);
+        userRepository.save(safeVaultUser);
+        return "OTP VERIFIED SUCCESSFULLY";
     }
 
     private String getUserOtp(){
