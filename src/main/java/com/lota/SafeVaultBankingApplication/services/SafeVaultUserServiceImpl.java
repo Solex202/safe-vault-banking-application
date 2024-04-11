@@ -45,28 +45,28 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
 
     @Override
-    public void registerUser(RegisterRequest request) {
+    public void registerUser(String  phoneNumber) {
+        boolean isPhoneNumberExists = userRepository.existsByPhoneNumber(phoneNumber);
 
-        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) throw new AppException("An account already exists with this phone number");
+        if (isPhoneNumberExists) throw new AppException("An account already exists with this phone number");
 
+        validatePhoneNumber(phoneNumber);
         SafeVaultUser user = new SafeVaultUser();
-//        validatePhoneNumber(request.getPhoneNumber());
-        smsSender.sendSmsTo(request.getPhoneNumber());
+        smsSender.sendSmsTo(phoneNumber);
 
-        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
-        validateEmail(request.getEmail());
+//        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
+//        validateEmail(request.getEmail());
 
-        user.setEmail(request.getEmail());
-        user.setPhoneNumber(request.getPhoneNumber());
-        user.setPassword(request.getPasscode());
+        user.setPhoneNumber(phoneNumber);
         user.setDateCreated(LocalDateTime.now());
-
         userRepository.save(user);
     }
 
     private void validatePhoneNumber(String phoneNumber){
-        String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
-        if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
+//        String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
+//        if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
+
+        if(phoneNumber.length() != 11) throw new AppException("Invalid phone number");
 
     }
 
@@ -74,4 +74,26 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         String regex ="^(.+)@(\\S+)$";
         if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.toString());
      }
+
+
+//    @Override
+//    public void registerUser(RegisterRequest request) {
+//
+//        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) throw new AppException("An account already exists with this phone number");
+//
+//        SafeVaultUser user = new SafeVaultUser();
+////        validatePhoneNumber(request.getPhoneNumber());
+//        smsSender.sendSmsTo(request.getPhoneNumber());
+//
+//        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
+//        validateEmail(request.getEmail());
+//
+//        user.setEmail(request.getEmail());
+//        user.setPhoneNumber(request.getPhoneNumber());
+//        user.setPassword(request.getPasscode());
+//        user.setDateCreated(LocalDateTime.now());
+//
+//        userRepository.save(user);
+//    }
+
 }
