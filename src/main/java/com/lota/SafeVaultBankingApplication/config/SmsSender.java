@@ -21,7 +21,7 @@ public class SmsSender {
     @Value("${twillo.key}")
     private String AUTH_TOKEN;
 
-    private static String generateToken() {
+    public  String generateToken() {
         Random random = new Random();
 
         String randomNumber = IntStream.range(0, 6)
