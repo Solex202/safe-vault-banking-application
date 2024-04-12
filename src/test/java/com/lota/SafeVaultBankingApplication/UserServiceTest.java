@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication;
 
+import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -26,6 +28,12 @@ public class UserServiceTest {
         String response = safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c");
 
         assertThat(response, is("OTP VERIFIED SUCCESSFULLY"));
+    }
+
+    @Test
+    void validateOtp_ThrowException_If_UserIdIsNotValid(){
+
+        assertThrows(AppException.class, ()-> safeVaultUserService.validateOtp("670376", "invalid id"));
     }
 
     @Test
