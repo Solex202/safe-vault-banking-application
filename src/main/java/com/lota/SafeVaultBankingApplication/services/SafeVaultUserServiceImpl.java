@@ -47,19 +47,13 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public void processUserPhoneNumber(String  phoneNumber) {
         boolean isPhoneNumberExists = userRepository.existsByPhoneNumber(phoneNumber);
 
-        if (isPhoneNumberExists) throw new AppException("An account already exists with this phone number");
-
-        SafeVaultUser user = new SafeVaultUser();
+        if (isPhoneNumberExists) throw new AppException(ACCOUNT_ALREADY_EXISTS.toString());
 
         String userOtp = getUserOtp();
         smsSender.sendSmsTo(phoneNumber);
 
-//        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
-//        validateEmail(request.getEmail());
-
-        user.setPhoneNumber(phoneNumber);
-        user.setOtp(userOtp);
-        user.setOtpCreatedTime(LocalDateTime.now());
+        SafeVaultUser user = SafeVaultUser.builder().phoneNumber(phoneNumber)
+                .otp(userOtp).otpCreatedTime(LocalDateTime.now()).build();
         userRepository.save(user);
     }
 
