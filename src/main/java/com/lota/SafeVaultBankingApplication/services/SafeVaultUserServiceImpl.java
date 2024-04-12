@@ -39,6 +39,13 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
                 ));
     }
 
+    private SafeVaultUser findUserById(String id){
+        return userRepository.findById(id)
+                .orElseThrow(()-> new UsernameNotFoundException(
+                        String.format(USER_NOT_FOUND.getMessage(), id)
+                ));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SafeVaultUser user = getUserBy(username);
@@ -63,7 +70,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     @Override
     public String validateOtp(String otp, String userId) {
 
-        SafeVaultUser safeVaultUser = getUserBy(userId);
+        SafeVaultUser safeVaultUser = findUserById(userId);
         if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
 
         final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
@@ -90,7 +97,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
     @Override
     public void processUserEmail(String email, String userId) {
-        SafeVaultUser user =getUserBy(userId);
+        SafeVaultUser user =findUserById(userId);
         validateEmail(email);
         user.setEmail(email);
         userRepository.save(user);
