@@ -58,8 +58,8 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
         if (isPhoneNumberExists) throw new AppException(ACCOUNT_ALREADY_EXISTS.getMessage());
 
-        String userOtp = getUserOtp();
         smsSender.sendSmsTo(phoneNumber);
+        String userOtp = getUserOtp();
 
         SafeVaultUser user = SafeVaultUser.builder().phoneNumber(phoneNumber)
                 .otp(userOtp).otpCreatedTime(LocalDateTime.now()).build();
@@ -86,6 +86,17 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     private String getUserOtp(){
         return smsSender.generateToken();
+    }
+
+    @Override
+    public String regenerateOtp(String userId){
+        SafeVaultUser user = findUserById(userId);
+        String otp = smsSender.generateToken();
+        user.setOtp(otp);
+        userRepository.save(user);
+
+        return otp;
+
     }
 
     private void validatePhoneNumberLength(String phoneNumber){
