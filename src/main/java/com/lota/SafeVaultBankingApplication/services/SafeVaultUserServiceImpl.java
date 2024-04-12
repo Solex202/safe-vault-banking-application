@@ -59,6 +59,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         userRepository.save(user);
     }
 
+
     @Override
     public String validateOtp(String otp, String userId) {
 
@@ -87,31 +88,18 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         if(phoneNumber.length() != 11) throw new AppException("Invalid phone number");
 
     }
+    @Override
+    public void processUserEmail(String email, String userId) {
+        SafeVaultUser user =getUserBy(userId);
+        validateEmail(email);
+        user.setEmail(email);
+        userRepository.save(user);
+    }
 
     private void validateEmail(String email){
         String regex ="^(.+)@(\\S+)$";
         if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.toString());
      }
 
-
-//    @Override
-//    public void registerUser(RegisterRequest request) {
-//
-//        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) throw new AppException("An account already exists with this phone number");
-//
-//        SafeVaultUser user = new SafeVaultUser();
-////        validatePhoneNumber(request.getPhoneNumber());
-//        smsSender.sendSmsTo(request.getPhoneNumber());
-//
-//        if(!Objects.equals(request.getPasscode(), request.getConfirmPasscode())) throw new AppException("Passwords does not match");
-//        validateEmail(request.getEmail());
-//
-//        user.setEmail(request.getEmail());
-//        user.setPhoneNumber(request.getPhoneNumber());
-//        user.setPassword(request.getPasscode());
-//        user.setDateCreated(LocalDateTime.now());
-//
-//        userRepository.save(user);
-//    }
 
 }
