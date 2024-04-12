@@ -17,7 +17,13 @@ public enum ExceptionMessages {
 
     INCORRECT_EMAIL("Email is incorrect"),
 
-    ACCOUNT_ALREADY_EXISTS("An account already exists with this phone number")
+    ACCOUNT_ALREADY_EXISTS("An account already exists with this phone number"),
+
+    OTP_NULL("Please fill in the otp sent to your inbox"),
+
+    OTP_EXPIRED("Otp has expired"),
+
+    INCORRECT_OTP("Otp is incorrect, Please provide the otp sent to your inbox")
 
     ;
 
