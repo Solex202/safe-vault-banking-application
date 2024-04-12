@@ -2,7 +2,6 @@ package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
-import com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
@@ -17,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
+import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.OTP_RESENT_SUCCESSFULLY;
 import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.OTP_VERIFIED_SUCCESSFULLY;
 
 @Service
@@ -74,7 +74,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
 
         final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
-
+            log.info("TIME ELAPSED -----> {}", timeElapsed);
         if(timeElapsed > 10) throw new AppException(OTP_EXPIRED.getMessage());
 
         if(!safeVaultUser.getOtp().matches(otp)) throw new AppException(INCORRECT_OTP.getMessage());
@@ -93,9 +93,12 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         SafeVaultUser user = findUserById(userId);
         String otp = smsSender.generateToken();
         user.setOtp(otp);
+        user.setOtpCreatedTime(LocalDateTime.now());
         userRepository.save(user);
 
-        return otp;
+        System.out.println(OTP_RESENT_SUCCESSFULLY.getMessage());;
+
+        return OTP_RESENT_SUCCESSFULLY.getMessage();
 
     }
 
