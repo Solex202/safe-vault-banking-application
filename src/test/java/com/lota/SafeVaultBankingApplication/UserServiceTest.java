@@ -23,8 +23,15 @@ public class UserServiceTest {
 
     @Test
     void validateOtp(){
-        String response = safeVaultUserService.validateOtp("850103", "661908db349dd6078964982c");
+        String response = safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c");
 
         assertThat(response, is("OTP VERIFIED SUCCESSFULLY"));
+    }
+
+    @Test
+    void testRegenerateOtp(){
+
+        String response = safeVaultUserService.regenerateOtp("661908db349dd6078964982c");
+        assertThat(response, is("A new otp has been sent to your inbox"));
     }
 }
