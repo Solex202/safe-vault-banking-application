@@ -2,6 +2,7 @@ package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
+import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.OTP_VERIFIED_SUCCESSFULLY;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public void processUserPhoneNumber(String  phoneNumber) {
         boolean isPhoneNumberExists = userRepository.existsByPhoneNumber(phoneNumber);
 
-        if (isPhoneNumberExists) throw new AppException(ACCOUNT_ALREADY_EXISTS.toString());
+        if (isPhoneNumberExists) throw new AppException(ACCOUNT_ALREADY_EXISTS.getMessage());
 
         String userOtp = getUserOtp();
         smsSender.sendSmsTo(phoneNumber);
@@ -61,17 +63,17 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public String validateOtp(String otp, String userId) {
 
         SafeVaultUser safeVaultUser = getUserBy(userId);
-        if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.toString());
+        if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
 
         final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
 
-        if(timeElapsed > 10) throw new AppException(OTP_EXPIRED.toString());
+        if(timeElapsed > 10) throw new AppException(OTP_EXPIRED.getMessage());
 
-        if(!safeVaultUser.getOtp().matches(otp)) throw new AppException(INCORRECT_OTP.toString());
+        if(!safeVaultUser.getOtp().matches(otp)) throw new AppException(INCORRECT_OTP.getMessage());
 
         safeVaultUser.setOtpVerified(true);
         userRepository.save(safeVaultUser);
-        return "OTP VERIFIED SUCCESSFULLY";
+        return OTP_VERIFIED_SUCCESSFULLY.getMessage();
     }
 
     private String getUserOtp(){
