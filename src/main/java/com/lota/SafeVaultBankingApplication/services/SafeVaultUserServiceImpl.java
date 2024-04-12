@@ -61,13 +61,13 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public String validateOtp(String otp, String userId) {
 
         SafeVaultUser safeVaultUser = getUserBy(userId);
-        if (safeVaultUser.getOtp().isEmpty()) throw new AppException("");
+        if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.toString());
 
         final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
 
-        if(timeElapsed > 10) throw new AppException("");
+        if(timeElapsed > 10) throw new AppException(OTP_EXPIRED.toString());
 
-        if(!safeVaultUser.getOtp().matches(otp)) throw new AppException("");
+        if(!safeVaultUser.getOtp().matches(otp)) throw new AppException(INCORRECT_OTP.toString());
 
         safeVaultUser.setOtpVerified(true);
         userRepository.save(safeVaultUser);
