@@ -69,7 +69,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     @Override
     public String validateOtp(String otp, String userId) {
-
+        //TODO: what if otp has been verified?
         SafeVaultUser safeVaultUser = findUserById(userId);
         if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
 
@@ -96,7 +96,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         user.setOtpCreatedTime(LocalDateTime.now());
         userRepository.save(user);
 
-        System.out.println(OTP_RESENT_SUCCESSFULLY.getMessage());;
+        log.info(OTP_RESENT_SUCCESSFULLY.getMessage());
 
         return OTP_RESENT_SUCCESSFULLY.getMessage();
 
