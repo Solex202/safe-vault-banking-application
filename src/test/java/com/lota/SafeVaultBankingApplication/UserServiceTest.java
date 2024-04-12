@@ -21,7 +21,11 @@ public class UserServiceTest {
     void processPhoneNumber(){
 
         safeVaultUserService.processUserPhoneNumber("+2349034653698");
+    }
 
+    @Test
+    void processPhoneNumber_ThrowExceptionIfPhoneNumberAlreadyExists(){
+        assertThrows(AppException.class, ()-> safeVaultUserService.processUserPhoneNumber("+2349034653698"));
     }
 
     @Test
