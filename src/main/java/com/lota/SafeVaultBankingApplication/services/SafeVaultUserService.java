@@ -8,6 +8,8 @@ public interface SafeVaultUserService {
 
     void processUserPhoneNumber(String phoneNumber);
 
+    void processUserEmail(String email, String userId);
+
     String validateOtp(String otp, String userId);
 
 
