@@ -5,6 +5,7 @@ import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,7 +34,19 @@ public class UserServiceTest {
     @Test
     void validateOtp_ThrowException_If_UserIdIsNotValid(){
 
-        assertThrows(AppException.class, ()-> safeVaultUserService.validateOtp("670376", "invalid id"));
+        assertThrows(UsernameNotFoundException.class, ()-> safeVaultUserService.validateOtp("670376", "invalid id"));
+    }
+
+    @Test
+    void validateOtp_ThrowException_If_OtpIsNull(){
+
+        assertThrows(AppException.class, ()-> safeVaultUserService.validateOtp("", "661908db349dd6078964982c"));
+    }
+
+    @Test
+    void validateOtp_ThrowException_If_OtpHasExpired(){
+
+        assertThrows(AppException.class, ()-> safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c"));
     }
 
     @Test
