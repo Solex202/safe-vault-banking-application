@@ -15,13 +15,16 @@ public class UserServiceTest {
     private SafeVaultUserService safeVaultUserService;
 
     @Test
-    void testRegisterUser(){
+    void processPhoneNumber(){
 
-//        RegisterRequest request = RegisterRequest.builder().email("onwuka@gmail.com").phoneNumber("+2349034653698").build();
-
-        //when
         safeVaultUserService.processUserPhoneNumber("+2349034653698");
 
-//        assertThat(request.getEmail(), is("onwuka@gmail.com"));
+    }
+
+    @Test
+    void validateOtp(){
+        String response = safeVaultUserService.validateOtp("850103", "6617d1bcf79f1d2c309e721f");
+
+        assertThat(response, is("OTP VERIFIED SUCCESSFULLY"));
     }
 }
