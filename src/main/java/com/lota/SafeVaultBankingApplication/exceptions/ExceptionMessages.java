@@ -15,7 +15,11 @@ public enum ExceptionMessages {
 
     INVALID_PHONENUMBER("Phone number is not valid"),
 
-    INCORRECT_EMAIL("Email is incorrect");
+    INCORRECT_EMAIL("Email is incorrect"),
+
+    ACCOUNT_ALREADY_EXISTS("An account already exists with this phone number")
+
+    ;
 
     private final String message;
 
