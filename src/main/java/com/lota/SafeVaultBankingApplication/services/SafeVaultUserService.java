@@ -14,5 +14,7 @@ public interface SafeVaultUserService {
 
     String validateOtp(String otp, String userId);
 
+    SafeVaultUser findUserById(String id);
+
 
 }
