@@ -20,24 +20,24 @@ public class UserServiceTest {
     private SafeVaultUserService safeVaultUserService;
 
     @Test
-    void processPhoneNumber(){
+    void processPhoneNumber() {
 
         safeVaultUserService.processUserPhoneNumber("+2349034653698");
     }
 
     @Test
-    void processPhoneNumber_ThrowExceptionIfPhoneNumberAlreadyExists(){
-        assertThrows(AppException.class, ()-> safeVaultUserService.processUserPhoneNumber("+2349034653698"));
+    void processPhoneNumber_ThrowExceptionIfPhoneNumberAlreadyExists() {
+        assertThrows(AppException.class, () -> safeVaultUserService.processUserPhoneNumber("+2349034653698"));
     }
 
     @Test
-    void processPhoneNumber_ThrowExceptionIfPhoneNumberIsEmpty(){
-        assertThrows(AppException.class, ()-> safeVaultUserService.processUserPhoneNumber(""));
+    void processPhoneNumber_ThrowExceptionIfPhoneNumberIsEmpty() {
+        assertThrows(AppException.class, () -> safeVaultUserService.processUserPhoneNumber(""));
     }
 
 
     @Test
-    void validateOtp(){
+    void validateOtp() {
         SafeVaultUser user = safeVaultUserService.findUserById("661908db349dd6078964982c");
         assertFalse(user.isOtpVerified());
         String response = safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c");
@@ -46,37 +46,42 @@ public class UserServiceTest {
     }
 
     @Test
-    void validateOtp_ThrowException_If_UserIdIsNotValid(){
+    void validateOtp_ThrowException_If_UserIdIsNotValid() {
 
-        assertThrows(UsernameNotFoundException.class, ()-> safeVaultUserService.validateOtp("670376", "invalid id"));
+        assertThrows(UsernameNotFoundException.class, () -> safeVaultUserService.validateOtp("670376", "invalid id"));
     }
 
     @Test
-    void validateOtp_ThrowException_If_OtpIsNull(){
+    void validateOtp_ThrowException_If_OtpIsNull() {
 
-        assertThrows(AppException.class, ()-> safeVaultUserService.validateOtp("", "661908db349dd6078964982c"));
+        assertThrows(AppException.class, () -> safeVaultUserService.validateOtp("", "661908db349dd6078964982c"));
     }
 
     @Test
-    void validateOtp_ThrowException_If_OtpHasExpired(){
+    void validateOtp_ThrowException_If_OtpHasExpired() {
 
-        assertThrows(AppException.class, ()-> safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c"));
+        assertThrows(AppException.class, () -> safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c"));
     }
 
     @Test
-    void testRegenerateOtp(){
+    void testRegenerateOtp() {
 
         String response = safeVaultUserService.regenerateOtp("661908db349dd6078964982c");
         assertThat(response, is("A new otp has been sent to your inbox"));
     }
 
     @Test
-    void testEmailProcessing(){
+    void testEmailProcessing() {
         safeVaultUserService.processUserEmail("onwukalotachukwu@gmail.com", "661908db349dd6078964982c");
     }
 
     @Test
-    void testEmailProcessing_ThrowExceptionWhenEmailIsInvalid(){
-        assertThrows(AppException.class, ()->safeVaultUserService.processUserEmail("onwukalotachukwu@", "661908db349dd6078964982c"));
+    void testEmailProcessing_ThrowExceptionWhenEmailIsInvalid() {
+        assertThrows(AppException.class, () -> safeVaultUserService.processUserEmail("onwukalotachukwu@", "661908db349dd6078964982c"));
+    }
+
+    @Test
+    void testEmailProcessing_ThrowExceptionWhenEmailIsNull() {
+        assertThrows(AppException.class, () -> safeVaultUserService.processUserEmail("", "661908db349dd6078964982c"));
     }
 }
