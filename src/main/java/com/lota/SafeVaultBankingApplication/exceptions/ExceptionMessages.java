@@ -27,7 +27,9 @@ public enum ExceptionMessages {
 
     INCORRECT_OTP("Otp is incorrect, Please provide the otp sent to your inbox"),
 
-    PHONE_NUMBER_IS_NULL("Please provide your phone number")
+    PHONE_NUMBER_IS_NULL("Please provide your phone number"),
+
+    OTP_ALREADY_VERIFIED("Phone already verified")
 
     ;
 
