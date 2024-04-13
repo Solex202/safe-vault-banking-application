@@ -16,5 +16,7 @@ public interface SafeVaultUserService {
 
     SafeVaultUser findUserById(String id);
 
+    String setPasscode(String userId, String passcode, String confirmPasscode);
+
 
 }
