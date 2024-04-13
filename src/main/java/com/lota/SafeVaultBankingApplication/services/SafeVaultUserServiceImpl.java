@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
-import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.OTP_RESENT_SUCCESSFULLY;
-import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.OTP_VERIFIED_SUCCESSFULLY;
+import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,19 +31,21 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
 
 
-    private SafeVaultUser findUserByEmail(String email){
+    public SafeVaultUser findUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new UsernameNotFoundException(
                         String.format(USER_NOT_FOUND.getMessage(), email)
                 ));
     }
 
+    @Override
     public SafeVaultUser findUserById(String id){
         return userRepository.findById(id)
                 .orElseThrow(()-> new UsernameNotFoundException(
                         String.format(USER_NOT_FOUND.getMessage(), id)
                 ));
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -72,6 +73,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public String validateOtp(String otp, String userId) {
         //TODO: what if otp has been verified?
         SafeVaultUser safeVaultUser = findUserById(userId);
+        if(safeVaultUser.isOtpVerified()) throw new AppException(OTP_ALREADY_VERIFIED.getMessage());
         if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
 
         final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
@@ -122,7 +124,11 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         String regex ="^(.+)@(\\S+)$";
         if (email.isEmpty()) throw new AppException(EMAIL_IS_NULL.getMessage());
         if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.getMessage());
-     }
+    }
 
+    @Override
+    public String setPasscode(String userId, String passcode, String confirmPasscode) {
+        return null;
+    }
 
 }
