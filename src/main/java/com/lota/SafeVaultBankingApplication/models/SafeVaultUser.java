@@ -1,6 +1,7 @@
 package com.lota.SafeVaultBankingApplication.models;
 
 import com.lota.SafeVaultBankingApplication.models.enums.Authority;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
@@ -16,10 +17,13 @@ public class SafeVaultUser {
 
     @Id
     private String id;
+    @Email
+    @NonNull
     private String email;
     private String password;
     private String firstname;
     private String lastname;
+    @NonNull
     private String phoneNumber;
     private LocalDateTime dateCreated;
     private String otp;
