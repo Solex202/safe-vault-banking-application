@@ -1,6 +1,7 @@
 package com.lota.SafeVaultBankingApplication;
 
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -36,6 +38,8 @@ public class UserServiceTest {
 
     @Test
     void validateOtp(){
+        SafeVaultUser user = safeVaultUserService.findUserById("661908db349dd6078964982c");
+        assertFalse(user.isOtpVerified());
         String response = safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c");
 
         assertThat(response, is("OTP VERIFIED SUCCESSFULLY"));
