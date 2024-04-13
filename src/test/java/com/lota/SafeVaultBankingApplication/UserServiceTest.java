@@ -29,6 +29,12 @@ public class UserServiceTest {
     }
 
     @Test
+    void processPhoneNumber_ThrowExceptionIfPhoneNumberIsEmpty(){
+        assertThrows(AppException.class, ()-> safeVaultUserService.processUserPhoneNumber(""));
+    }
+
+
+    @Test
     void validateOtp(){
         String response = safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c");
 
