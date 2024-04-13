@@ -39,7 +39,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
                 ));
     }
 
-    private SafeVaultUser findUserById(String id){
+    public SafeVaultUser findUserById(String id){
         return userRepository.findById(id)
                 .orElseThrow(()-> new UsernameNotFoundException(
                         String.format(USER_NOT_FOUND.getMessage(), id)
