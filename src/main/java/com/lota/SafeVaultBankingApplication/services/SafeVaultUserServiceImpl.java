@@ -56,7 +56,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public void processUserPhoneNumber(String  phoneNumber) {
         boolean isPhoneNumberExists = userRepository.existsByPhoneNumber(phoneNumber);
 
-        if(phoneNumber.isEmpty()) throw new AppException("");
+        if(phoneNumber.isEmpty()) throw new AppException(PHONE_NUMBER_IS_NULL.getMessage());
         if (isPhoneNumberExists) throw new AppException(ACCOUNT_ALREADY_EXISTS.getMessage());
 
         smsSender.sendSmsTo(phoneNumber);
