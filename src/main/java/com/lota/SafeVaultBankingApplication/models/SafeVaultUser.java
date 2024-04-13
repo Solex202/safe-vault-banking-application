@@ -31,6 +31,7 @@ public class SafeVaultUser {
     private boolean isEmailVerified;
     private LocalDateTime otpCreatedTime;
     private LocalDateTime dateUpdated;
+    private String passcode;
 
     private Set<Authority> authorities;
 }
