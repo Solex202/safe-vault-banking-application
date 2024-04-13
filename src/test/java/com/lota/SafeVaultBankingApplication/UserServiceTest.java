@@ -69,4 +69,14 @@ public class UserServiceTest {
         String response = safeVaultUserService.regenerateOtp("661908db349dd6078964982c");
         assertThat(response, is("A new otp has been sent to your inbox"));
     }
+
+    @Test
+    void testEmailProcessing(){
+        safeVaultUserService.processUserEmail("onwukalotachukwu@gmail.com", "661908db349dd6078964982c");
+    }
+
+    @Test
+    void testEmailProcessing_ThrowExceptionWhenEmailIsInvalid(){
+        assertThrows(AppException.class, ()->safeVaultUserService.processUserEmail("onwukalotachukwu@", "661908db349dd6078964982c"));
+    }
 }
