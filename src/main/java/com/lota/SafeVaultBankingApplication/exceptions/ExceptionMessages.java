@@ -23,7 +23,9 @@ public enum ExceptionMessages {
 
     OTP_EXPIRED("Otp has expired"),
 
-    INCORRECT_OTP("Otp is incorrect, Please provide the otp sent to your inbox")
+    INCORRECT_OTP("Otp is incorrect, Please provide the otp sent to your inbox"),
+
+    PHONE_NUMBER_IS_NULL("Please provide your phone number")
 
     ;
 
