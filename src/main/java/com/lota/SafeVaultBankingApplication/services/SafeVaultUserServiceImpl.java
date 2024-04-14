@@ -126,8 +126,16 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.getMessage());
     }
 
+    public  boolean containsOnlyNumbers(String str) {
+        return str.matches("[0-9]+");
+    }
+
     @Override
     public String setPasscode(String userId, String passcode, String confirmPasscode) {
+
+        SafeVaultUser user = findUserById(userId);
+
+        if (!containsOnlyNumbers(passcode)) throw new AppException(INVALID_PASSCODE.getMessage());
         return null;
     }
 
