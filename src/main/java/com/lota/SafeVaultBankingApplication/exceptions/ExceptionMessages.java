@@ -29,7 +29,9 @@ public enum ExceptionMessages {
 
     PHONE_NUMBER_IS_NULL("Please provide your phone number"),
 
-    OTP_ALREADY_VERIFIED("Phone already verified")
+    OTP_ALREADY_VERIFIED("Phone already verified"),
+
+    INVALID_PASSCODE("Passcode must contain only numbers")
 
     ;
 
