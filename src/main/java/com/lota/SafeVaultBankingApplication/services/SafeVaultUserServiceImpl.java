@@ -136,11 +136,12 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
         SafeVaultUser user = findUserById(userId);
 
-        if (!containsOnlyNumbers(passcode)) throw new AppException(INVALID_PASSCODE.getMessage());
-        if (!passcode.matches(confirmPasscode)) throw new AppException("");
+        if (!containsOnlyNumbers(passcode) && !containsOnlyNumbers(confirmPasscode)) throw new AppException(INVALID_PASSCODE.getMessage());
+        if(passcode.length() != 6 && confirmPasscode.length() != 6) throw new AppException("Passcode must only be 6 digits");
+        if (!passcode.matches(confirmPasscode)) throw new AppException("No match");
 
         String hashedPassword = hashPassword(passcode);
-        user.setPassword(hashedPassword);
+        user.setPasscode(hashedPassword);
 
         userRepository.save(user);
         return PASSCODE_SET_SUCCESSFULLY.getMessage();
