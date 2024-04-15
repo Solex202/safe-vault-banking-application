@@ -84,4 +84,11 @@ public class UserServiceTest {
     void testEmailProcessing_ThrowExceptionWhenEmailIsNull() {
         assertThrows(AppException.class, () -> safeVaultUserService.processUserEmail("", "661908db349dd6078964982c"));
     }
+
+    @Test
+    void testSetPasscode(){
+
+        String response = safeVaultUserService.setPasscode("661908db349dd6078964982c", "121323", "121323");
+        assertThat(response, is("Passcode set successfully, continue"));
+    }
 }
