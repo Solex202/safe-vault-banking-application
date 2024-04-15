@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -126,7 +127,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.getMessage());
     }
 
-    public  boolean containsOnlyNumbers(String str) {
+    private boolean containsOnlyNumbers(String str) {
         return str.matches("[0-9]+");
     }
 
@@ -136,7 +137,22 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         SafeVaultUser user = findUserById(userId);
 
         if (!containsOnlyNumbers(passcode)) throw new AppException(INVALID_PASSCODE.getMessage());
-        return null;
+        if (!passcode.matches(confirmPasscode)) throw new AppException("");
+
+        String hashedPassword = hashPassword(passcode);
+        user.setPassword(hashedPassword);
+
+        userRepository.save(user);
+        return PASSCODE_SET_SUCCESSFULLY.getMessage();
+    }
+
+    public static String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    // Verify a password using BCrypt
+    public static boolean verifyPassword(String password, String hashedPassword) {
+        return BCrypt.checkpw(password, hashedPassword);
     }
 
 }
