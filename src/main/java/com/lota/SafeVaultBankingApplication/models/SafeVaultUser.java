@@ -20,7 +20,7 @@ public class SafeVaultUser {
     @Email
     @NonNull
     private String email;
-    private String password;
+    private String passcode;
     private String firstname;
     private String lastname;
     @NonNull
@@ -31,7 +31,6 @@ public class SafeVaultUser {
     private boolean isEmailVerified;
     private LocalDateTime otpCreatedTime;
     private LocalDateTime dateUpdated;
-    private String passcode;
 
     private Set<Authority> authorities;
 }
