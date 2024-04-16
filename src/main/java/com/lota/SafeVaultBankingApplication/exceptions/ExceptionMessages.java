@@ -31,7 +31,11 @@ public enum ExceptionMessages {
 
     OTP_ALREADY_VERIFIED("Phone already verified"),
 
-    INVALID_PASSCODE("Passcode must contain only numbers")
+    INVALID_PASSCODE("Passcode must contain only numbers"),
+
+    PASSCODES_DO_NOT_MATCH("Passcodes must match"),
+
+    PASSCODE_IS_NULL("Please provide passcode here")
 
     ;
 
