@@ -23,6 +23,7 @@ public class SafeVaultUser {
     private String passcode;
     private String firstname;
     private String lastname;
+    private String image;
     @NonNull
     private String phoneNumber;
     private LocalDateTime dateCreated;
