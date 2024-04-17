@@ -1,6 +1,7 @@
 package com.lota.SafeVaultBankingApplication.models;
 
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
+import com.lota.SafeVaultBankingApplication.models.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +19,12 @@ public class SafeVaultUserProfile {
     //personal information
     private String dob;
     private int age;
-    private String gender;
+    private Gender gender;
     private String motherMaidenName;
     //contact information
     private String address;
     private String stateOfResidence;
+    private String lgaOfResidence;
     private String stateOfOrigin;
     //employment information
     private String occupation;
