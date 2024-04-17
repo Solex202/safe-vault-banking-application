@@ -31,6 +31,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         return findUserByEmail(searchParam);
     }
 
+    //TODO:THOUGHT? What if a user doesn't complete a registration flow and some of the user's data has been saved on the system
 
     public SafeVaultUser findUserByEmail(String email){
         return userRepository.findByEmail(email)
@@ -136,16 +137,20 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
         SafeVaultUser user = findUserById(userId);
 
-        if(passcode.isEmpty() || confirmPasscode.isEmpty()) throw new AppException(PASSCODE_IS_NULL.getMessage());
-        if (!containsOnlyNumbers(passcode) || !containsOnlyNumbers(confirmPasscode)) throw new AppException(INVALID_PASSCODE.getMessage());
-        if(passcode.length() != 6 || confirmPasscode.length() != 6) throw new AppException("Passcode must only be 6 digits");
-        if (!passcode.matches(confirmPasscode)) throw new AppException(PASSCODES_DO_NOT_MATCH.getMessage());
+        validatePasscode(passcode, confirmPasscode);
 
         String hashedPassword = hashPassword(passcode);
         user.setPasscode(hashedPassword);
 
         userRepository.save(user);
         return PASSCODE_SET_SUCCESSFULLY.getMessage();
+    }
+
+    private void validatePasscode(String passcode, String confirmPasscode) {
+        if(passcode.isEmpty() || confirmPasscode.isEmpty()) throw new AppException(PASSCODE_IS_NULL.getMessage());
+        if (!containsOnlyNumbers(passcode) || !containsOnlyNumbers(confirmPasscode)) throw new AppException(INVALID_PASSCODE.getMessage());
+        if(passcode.length() != 6 || confirmPasscode.length() != 6) throw new AppException("Passcode must only be 6 digits");
+        if (!passcode.matches(confirmPasscode)) throw new AppException(PASSCODES_DO_NOT_MATCH.getMessage());
     }
 
     public static String hashPassword(String password) {
@@ -156,5 +161,9 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     public static boolean verifyPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
+
+    //TODO: Find a user, return  user response object
+    //TODO: Find all users, return list of user response object
+    //TODO: delete a user, return a string
 
 }
