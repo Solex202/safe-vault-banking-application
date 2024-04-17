@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor@NoArgsConstructor
 @Builder
@@ -17,7 +19,7 @@ public class SafeVaultUserProfile {
     @Id
     private String id;
     //personal information
-    private String dob;
+    private LocalDate dateOfBirth;
     private int age;
     private Gender gender;
     private String motherMaidenName;
