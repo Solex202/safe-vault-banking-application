@@ -1,13 +1,10 @@
 package com.lota.SafeVaultBankingApplication.dtos.request;
 
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CreateProfileRequest {
