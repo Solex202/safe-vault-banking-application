@@ -18,7 +18,6 @@ public interface SafeVaultUserService {
 
     String setPasscode(String userId, String passcode, String confirmPasscode);
 
-//    String updateUserProfile(String userId, Upda)
 
 
 }
