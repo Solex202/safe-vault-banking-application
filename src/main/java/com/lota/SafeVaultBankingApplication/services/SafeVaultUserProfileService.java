@@ -5,5 +5,5 @@ import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
 
 public interface SafeVaultUserProfileService {
 
-    CreateProfileResponse createUserProfile(CreateProfileRequest request);
+    CreateProfileResponse createUserProfile(String userId, CreateProfileRequest request);
 }
