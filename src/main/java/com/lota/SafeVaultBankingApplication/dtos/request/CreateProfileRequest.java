@@ -3,13 +3,15 @@ package com.lota.SafeVaultBankingApplication.dtos.request;
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CreateProfileRequest {
 
-    private String dob;
+    private LocalDate dateOfBirth;
     private int age;
     private String gender;
     private String motherMaidenName;
