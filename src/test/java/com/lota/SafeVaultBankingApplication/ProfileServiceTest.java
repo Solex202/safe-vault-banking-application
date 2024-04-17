@@ -23,7 +23,7 @@ public class ProfileServiceTest {
     void createProfile(){
 
         CreateProfileRequest request = CreateProfileRequest.builder()
-                .dateOfBirth(LocalDate.of(1994, 3,21))
+                .dateOfBirth(LocalDate.of(1995, 3,21))
                 .gender("MALE")
                 .stateOfOrigin("Original state")
                 .bvn("322213232121")
