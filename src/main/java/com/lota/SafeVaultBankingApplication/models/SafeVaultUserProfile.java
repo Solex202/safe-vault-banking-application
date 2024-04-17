@@ -20,9 +20,7 @@ public class SafeVaultUserProfile {
     private int age;
     private String gender;
     private String motherMaidenName;
-    private String image;
     //contact information
-    private String phoneNumber;
     private String address;
     private String stateOfResidence;
     private String stateOfOrigin;
