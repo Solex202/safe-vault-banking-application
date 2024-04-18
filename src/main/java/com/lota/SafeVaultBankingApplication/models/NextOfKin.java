@@ -1,9 +1,6 @@
 package com.lota.SafeVaultBankingApplication.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -11,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class NextOfKin {
 
     @Id
