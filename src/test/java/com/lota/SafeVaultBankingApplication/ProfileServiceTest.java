@@ -23,14 +23,14 @@ public class ProfileServiceTest {
     void createProfile(){
 
         CreateProfileRequest request = CreateProfileRequest.builder()
-                .dateOfBirth(LocalDate.of(1995, 3,21))
+                .dateOfBirth(LocalDate.of(1992, 3,21))
                 .gender("MALE")
                 .stateOfOrigin("Original state")
                 .bvn("322213232121")
                 .build();
 
         CreateProfileResponse response = profileService.createUserProfile("661908db349dd6078964982c", request);
-        assertThat(response.getAge(), is(30));
+        assertThat(response.getAge(), is(28));
 
 
     }
