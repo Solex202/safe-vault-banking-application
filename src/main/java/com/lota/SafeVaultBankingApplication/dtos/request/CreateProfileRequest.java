@@ -26,6 +26,13 @@ public class CreateProfileRequest {
     private String employerName;
     private String employerContact;
 
-    private NextOfKin nextOfKin;
+//    private NextOfKin nextOfKin;
     private String bvn;
+
+    private String nextOfKinFirstname;
+    private String nextOfLastname;
+    private String nextOfKinEmailAddress;
+    private String nextOfPhoneNumber;
+    private String nextOfKinAddress;
+    private String relationship;
 }
