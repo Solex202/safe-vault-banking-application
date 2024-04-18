@@ -3,8 +3,10 @@ package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.CreateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
+import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUserProfile;
+import com.lota.SafeVaultBankingApplication.repositories.NextOfKinRepository;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     private final ModelMapper mapper;
     private final SafeVaultUserProfileRepository safeVaultUserProfileRepository;
     private final SafeVaultUserService userService;
+    private final NextOfKinRepository nextOfKinRepository;
     @Override
     public CreateProfileResponse createUserProfile(String userId, CreateProfileRequest request) {
 
@@ -28,6 +31,17 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
         SafeVaultUserProfile safeVaultUserProfile = mapper.map(request, SafeVaultUserProfile.class);
         safeVaultUserProfile.setAge(calculateAge(request.getDateOfBirth()));
         safeVaultUserProfile.setSafeVaultUser(user);
+
+        NextOfKin nextOfKin = NextOfKin.builder()
+                .safeVaultUser(user)
+                .address(request.getNextOfKinAddress())
+                .emailAddress(request.getNextOfKinEmailAddress())
+                .firstname(request.getNextOfKinFirstname())
+                .lastname(request.getNextOfLastname())
+                .relationship(request.getRelationship())
+                .build();
+
+        nextOfKinRepository.save(nextOfKin);
 
         SafeVaultUserProfile savedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
 
