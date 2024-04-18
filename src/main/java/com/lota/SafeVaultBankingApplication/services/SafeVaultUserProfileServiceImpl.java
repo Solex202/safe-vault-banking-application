@@ -31,6 +31,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
 
         SafeVaultUserProfile savedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
 
+        log.info("PROFILE RESPONSE {}",  mapper.map(savedProfile, CreateProfileResponse.class));
         return mapper.map(savedProfile, CreateProfileResponse.class);
     }
 
