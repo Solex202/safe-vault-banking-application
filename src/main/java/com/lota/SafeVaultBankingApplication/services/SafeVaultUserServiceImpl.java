@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
@@ -98,7 +99,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         SafeVaultUser user = findUserById(userId);
         String otp = smsSender.generateToken();
         user.setOtp(otp);
-        user.setOtpCreatedTime(LocalDateTime.now());
+        user.setOtpCreatedTime(LocalDateTime.now(ZoneOffset.UTC));
         userRepository.save(user);
 
         log.info(OTP_RESENT_SUCCESSFULLY.getMessage());
