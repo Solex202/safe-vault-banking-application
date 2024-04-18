@@ -33,7 +33,7 @@ public class SafeVaultUserProfile {
     private String employerName;
     private String employerContact;
 
-    private  NextOfKin nextOfKin;
+//    private  NextOfKin nextOfKin;
     private String bvn;
     @DBRef
     private SafeVaultUser safeVaultUser;
