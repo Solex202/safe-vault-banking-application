@@ -24,6 +24,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     private final SafeVaultUserProfileRepository safeVaultUserProfileRepository;
     private final SafeVaultUserService userService;
     private final NextOfKinRepository nextOfKinRepository;
+
     @Override
     public CreateProfileResponse createUserProfile(String userId, CreateProfileRequest request) {
 
