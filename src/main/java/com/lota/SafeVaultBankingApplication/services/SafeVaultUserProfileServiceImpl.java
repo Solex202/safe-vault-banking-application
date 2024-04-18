@@ -32,6 +32,15 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
         safeVaultUserProfile.setAge(calculateAge(request.getDateOfBirth()));
         safeVaultUserProfile.setSafeVaultUser(user);
 
+        saveNextOfKin(request, user);
+
+        SafeVaultUserProfile savedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
+
+        log.info("PROFILE RESPONSE {}",  mapper.map(savedProfile, CreateProfileResponse.class));
+        return mapper.map(savedProfile, CreateProfileResponse.class);
+    }
+
+    private void saveNextOfKin(CreateProfileRequest request, SafeVaultUser user) {
         NextOfKin nextOfKin = NextOfKin.builder()
                 .safeVaultUser(user)
                 .address(request.getNextOfKinAddress())
@@ -42,11 +51,6 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
                 .build();
 
         nextOfKinRepository.save(nextOfKin);
-
-        SafeVaultUserProfile savedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
-
-        log.info("PROFILE RESPONSE {}",  mapper.map(savedProfile, CreateProfileResponse.class));
-        return mapper.map(savedProfile, CreateProfileResponse.class);
     }
 
 
