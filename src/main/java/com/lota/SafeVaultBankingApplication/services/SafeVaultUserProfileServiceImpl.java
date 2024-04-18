@@ -2,6 +2,7 @@ package com.lota.SafeVaultBankingApplication.services;
 
 
 import com.lota.SafeVaultBankingApplication.dtos.request.CreateProfileRequest;
+import com.lota.SafeVaultBankingApplication.dtos.request.UpdateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
@@ -65,4 +66,11 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
 
         return age;
     }
+
+
+    @Override
+    public String updateUserProfile(String userId, UpdateProfileRequest request) {
+        return null;
+    }
+
 }
