@@ -4,7 +4,7 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.dtos.request.CreateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.request.UpdateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
-import com.lota.SafeVaultBankingApplication.models.ApplicationMapper;
+import com.lota.SafeVaultBankingApplication.mapper.ApplicationMapper;
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUserProfile;
