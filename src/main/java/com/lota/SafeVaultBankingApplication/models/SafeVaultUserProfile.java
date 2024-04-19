@@ -8,8 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor@NoArgsConstructor
@@ -35,6 +37,9 @@ public class SafeVaultUserProfile {
 
 //    private  NextOfKin nextOfKin;
     private String bvn;
-    @DBRef
+    @DocumentReference
     private SafeVaultUser safeVaultUser;
+
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateUpdated;
 }
