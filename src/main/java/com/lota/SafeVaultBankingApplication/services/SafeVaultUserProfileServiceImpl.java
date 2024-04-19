@@ -4,6 +4,7 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.dtos.request.CreateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.request.UpdateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
+import com.lota.SafeVaultBankingApplication.models.ApplicationMapper;
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUserProfile;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 @Service
@@ -25,6 +27,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     private final SafeVaultUserProfileRepository safeVaultUserProfileRepository;
     private final SafeVaultUserService userService;
     private final NextOfKinRepository nextOfKinRepository;
+    private final ApplicationMapper applicationMapper;
 
     @Override
     public CreateProfileResponse createUserProfile(String userId, CreateProfileRequest request) {
@@ -33,8 +36,9 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
         SafeVaultUserProfile safeVaultUserProfile = mapper.map(request, SafeVaultUserProfile.class);
         safeVaultUserProfile.setAge(calculateAge(request.getDateOfBirth()));
         safeVaultUserProfile.setSafeVaultUser(user);
-
         saveNextOfKin(request, user);
+        safeVaultUserProfile.setDateCreated(LocalDateTime.now());
+
 
         SafeVaultUserProfile savedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
 
@@ -69,7 +73,12 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
 
 
     @Override
-    public String updateUserProfile(String userId, UpdateProfileRequest request) {
+    public SafeVaultUserProfile updateUserProfile(String userId,  UpdateProfileRequest request) {
+
+        SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userId);
+        applicationMapper.updateProfileToSafeVaultUserProfile(request, safeVaultUserProfile);
+
+        safeVaultUserProfile.setDateUpdated(LocalDateTime.now());
         return null;
     }
 
