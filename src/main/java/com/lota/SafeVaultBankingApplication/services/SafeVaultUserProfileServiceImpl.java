@@ -27,7 +27,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     private final SafeVaultUserProfileRepository safeVaultUserProfileRepository;
     private final SafeVaultUserService userService;
     private final NextOfKinRepository nextOfKinRepository;
-    private final ApplicationMapper applicationMapper;
+//    private final ApplicationMapper applicationMapper;
 
     @Override
     public CreateProfileResponse createUserProfile(String userId, CreateProfileRequest request) {
@@ -76,9 +76,11 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     public SafeVaultUserProfile updateUserProfile(String userId,  UpdateProfileRequest request) {
 
         SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userId);
-        applicationMapper.updateProfileToSafeVaultUserProfile(request, safeVaultUserProfile);
+        mapper.map(request, safeVaultUserProfile.getClass());
 
         safeVaultUserProfile.setDateUpdated(LocalDateTime.now());
+
+        safeVaultUserProfileRepository.save(safeVaultUserProfile);
         return null;
     }
 
