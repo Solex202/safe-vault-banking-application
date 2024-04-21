@@ -16,10 +16,7 @@ public class AppConfig {
         return modelMapper;
     }
 
-//    @Bean
-//    public ApplicationMapper applicationMapper(){
-//        return new ApplicationMapper;
-//    }
+    //
 
 
 }
