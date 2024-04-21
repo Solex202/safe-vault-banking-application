@@ -18,5 +18,5 @@ public interface ApplicationMapper {
     default boolean isNotEmpty(String value) {
         return value != null && !value.isEmpty();
     }
-    void updateProfileToSafeVaultUserProfile(UpdateProfileRequest request, @MappingTarget SafeVaultUserProfile safeVaultUserProfile);
+    SafeVaultUserProfile updateProfileToSafeVaultUserProfile(UpdateProfileRequest request, @MappingTarget SafeVaultUserProfile safeVaultUserProfile);
 }
