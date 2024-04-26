@@ -38,11 +38,11 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
         safeVaultUserProfile.setSafeVaultUser(user);
         saveNextOfKin(request, user);
         safeVaultUserProfile.setDateCreated(LocalDateTime.now());
-
+        safeVaultUserProfile.setDateUpdated(LocalDateTime.now());
 
         SafeVaultUserProfile savedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
 
-//        log.info("PROFILE RESPONSE {}",  mapper.map(savedProfile, CreateProfileResponse.class));
+        log.info("PROFILE RESPONSE {}",  mapper.map(savedProfile, CreateProfileResponse.class));
         return mapper.map(savedProfile, CreateProfileResponse.class);
     }
 
@@ -71,7 +71,6 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
         return age;
     }
 
-
     @Override
     public SafeVaultUserProfile updateUserProfile(String userId,  UpdateProfileRequest request) {
 
@@ -80,7 +79,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
 
         safeVaultUserProfile.setDateUpdated(LocalDateTime.now());
         safeVaultUserProfileRepository.save(updatedProfile);
-        return null;
+        return safeVaultUserProfile;
     }
 
 }
