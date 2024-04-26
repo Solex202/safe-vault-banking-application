@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication.models;
 
+import com.lota.SafeVaultBankingApplication.models.enums.AccountType;
 import com.lota.SafeVaultBankingApplication.models.enums.Authority;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -35,5 +36,7 @@ public class SafeVaultUser {
     private LocalDateTime otpCreatedTime;
     private LocalDateTime dateUpdated;
 
+    private String accountNumber;
+    private AccountType accountType;
     private Set<Authority> authorities;
 }
