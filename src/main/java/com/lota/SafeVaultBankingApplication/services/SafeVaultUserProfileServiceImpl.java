@@ -72,10 +72,12 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     }
 
     @Override
-    public SafeVaultUserProfile updateUserProfile(String userId,  UpdateProfileRequest request) {
+    public SafeVaultUserProfile updateUserProfile(String userProfileId,  UpdateProfileRequest request) {
 
-        SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userId);
+        SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userProfileId);
+        log.info("FOUND PROFILE ID{}", safeVaultUserProfile.getId());
          mapper.map(request, safeVaultUserProfile);
+         safeVaultUserProfile.setAge(calculateAge(request.getDateOfBirth()));
 
         safeVaultUserProfile.setDateUpdated(LocalDateTime.now());
 
