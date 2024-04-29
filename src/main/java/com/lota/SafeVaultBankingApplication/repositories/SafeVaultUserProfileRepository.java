@@ -3,6 +3,8 @@ package com.lota.SafeVaultBankingApplication.repositories;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUserProfile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.Optional;
+
 public interface SafeVaultUserProfileRepository extends MongoRepository<SafeVaultUserProfile, String> {
-    SafeVaultUserProfile findBySafeVaultUserId(String userId);
+    Optional<SafeVaultUserProfile> findBySafeVaultUserId(String userId);
 }
