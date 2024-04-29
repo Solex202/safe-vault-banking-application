@@ -35,7 +35,9 @@ public enum ExceptionMessages {
 
     PASSCODES_DO_NOT_MATCH("Passcodes must match"),
 
-    PASSCODE_IS_NULL("Please provide passcode here")
+    PASSCODE_IS_NULL("Please provide passcode here"),
+
+    PROFILE_NOT_FOUND("User profile not found ")
 
     ;
 
