@@ -18,6 +18,8 @@ public interface SafeVaultUserService {
 
     String setPasscode(String userId, String passcode, String confirmPasscode);
 
+    void setAccountNumber(String userId);
+
 
 
 }
