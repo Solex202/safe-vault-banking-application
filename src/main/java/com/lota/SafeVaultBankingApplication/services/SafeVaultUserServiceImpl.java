@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.*;
@@ -161,6 +165,20 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     // Verify a password using BCrypt
     public static boolean verifyPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
+    }
+
+    public void setAccountNumber(String userId){
+
+        SafeVaultUser user = findUserById(userId);
+        Random random = new Random();
+
+        String randomNumber = IntStream.range(0, 7)
+                .mapToObj(i -> String.valueOf(random.nextInt(10)))
+                .collect(Collectors.joining());
+
+        user.setAccountNumber(List.of(user.getPhoneNumber().substring(1), "031" + randomNumber));
+
+        userRepository.save(user);
     }
 
     //TODO: Find a user, return  user response object
