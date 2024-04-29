@@ -176,7 +176,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
                 .mapToObj(i -> String.valueOf(random.nextInt(10)))
                 .collect(Collectors.joining());
 
-        user.setAccountNumber(List.of(user.getPhoneNumber().substring(1), "031" + randomNumber));
+        user.setAccountNumber(List.of(user.getPhoneNumber().substring(4), "031" + randomNumber));
 
         userRepository.save(user);
     }
