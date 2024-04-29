@@ -116,7 +116,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 //        String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
 //        if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
 
-        if(phoneNumber.length() != 11) throw new AppException("Invalid phone number");
+        if(phoneNumber.length() != 11) throw new AppException(INVALID_PHONENUMBER.getMessage());
 
     }
     @Override
@@ -154,7 +154,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     private void validatePasscode(String passcode, String confirmPasscode) {
         if(passcode.isEmpty() || confirmPasscode.isEmpty()) throw new AppException(PASSCODE_IS_NULL.getMessage());
         if (!containsOnlyNumbers(passcode) || !containsOnlyNumbers(confirmPasscode)) throw new AppException(INVALID_PASSCODE.getMessage());
-        if(passcode.length() != 6 || confirmPasscode.length() != 6) throw new AppException("Passcode must only be 6 digits");
+        if(passcode.length() != 6 || confirmPasscode.length() != 6) throw new AppException(INVALID_PASSCODE_LENGTH.getMessage());
         if (!passcode.matches(confirmPasscode)) throw new AppException(PASSCODES_DO_NOT_MATCH.getMessage());
     }
 
