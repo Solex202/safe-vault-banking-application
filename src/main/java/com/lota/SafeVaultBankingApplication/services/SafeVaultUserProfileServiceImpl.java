@@ -4,6 +4,7 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.dtos.request.CreateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.request.UpdateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
+import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.mapper.ApplicationMapper;
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+
+import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.PROFILE_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -74,8 +77,8 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     @Override
     public SafeVaultUserProfile updateUserProfile(String userProfileId,  UpdateProfileRequest request) {
 
-        SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userProfileId);
-        log.info("FOUND PROFILE ID{}", safeVaultUserProfile.getId());
+        SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userProfileId)
+                .orElseThrow(()-> new AppException(PROFILE_NOT_FOUND.getMessage()));
          mapper.map(request, safeVaultUserProfile);
          safeVaultUserProfile.setAge(calculateAge(request.getDateOfBirth()));
 
