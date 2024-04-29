@@ -1,12 +1,14 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
+import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +33,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     private final SafeVaultUserRepository userRepository;
     private final SmsSender smsSender;
+    private final ModelMapper mapper;
     @Override
     public SafeVaultUser getUserBy(String searchParam) {
         return findUserByEmail(searchParam);
@@ -179,6 +182,12 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         user.setAccountNumber(List.of(user.getPhoneNumber().substring(4), "031" + randomNumber));
 
         userRepository.save(user);
+    }
+
+    UserResponseDto viewUser(String userId){
+        SafeVaultUser user = findUserById(userId);
+
+        return mapper.map(user, UserResponseDto.class);
     }
 
     //TODO: Find a user, return  user response object
