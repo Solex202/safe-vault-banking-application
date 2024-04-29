@@ -98,4 +98,10 @@ public class UserServiceTest {
         AppException exception = assertThrows(AppException.class, ()->safeVaultUserService.setPasscode("661908db349dd6078964982c", "121323", "12132324444"));
         assertThat(exception.getMessage(), is("Passcodes must match"));
     }
+
+    @Test
+    void setAccountNumber(){
+
+        safeVaultUserService.setAccountNumber("661908db349dd6078964982c");
+    }
 }
