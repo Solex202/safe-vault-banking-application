@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -36,7 +37,7 @@ public class SafeVaultUser {
     private LocalDateTime otpCreatedTime;
     private LocalDateTime dateUpdated;
 
-    private String accountNumber;
+    private List<String> accountNumber;
     private AccountType accountType;
     private Set<Authority> authorities;
 }
