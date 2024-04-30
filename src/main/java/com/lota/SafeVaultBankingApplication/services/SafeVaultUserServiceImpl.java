@@ -37,9 +37,14 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     private final SafeVaultUserRepository userRepository;
     private final SmsSender smsSender;
     private final ModelMapper mapper;
+    private boolean methodEffectOccurred;
     @Override
     public SafeVaultUser getUserBy(String searchParam) {
         return findUserByEmail(searchParam);
+    }
+
+    public boolean isMethodEffectOccurred() {
+        return methodEffectOccurred;
     }
 
     //TODO:THOUGHT? What if a user doesn't complete a registration flow and some of the user's data has been saved on the system
@@ -79,6 +84,8 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         SafeVaultUser user = SafeVaultUser.builder().phoneNumber(phoneNumber)
                 .otp(userOtp).otpCreatedTime(LocalDateTime.now()).build();
         userRepository.save(user);
+
+        methodEffectOccurred = true;
     }
 
 
@@ -130,6 +137,8 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         validateEmail(email);
         user.setEmail(email);
         userRepository.save(user);
+
+        methodEffectOccurred = true;
     }
 
     private void validateEmail(String email){
