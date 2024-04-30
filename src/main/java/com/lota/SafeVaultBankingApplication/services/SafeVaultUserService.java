@@ -27,6 +27,8 @@ public interface SafeVaultUserService {
 
     List<UserResponseDto> viewAllCustomers(int page, int size);
 
+    boolean isMethodEffectOccurred();
+
 
 
 
