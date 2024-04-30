@@ -10,8 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -23,6 +22,7 @@ public class UserServiceTest {
     void processPhoneNumber() {
 
         safeVaultUserService.processUserPhoneNumber("+2349034653698");
+        assertTrue(safeVaultUserService.isMethodEffectOccurred());
     }
 
     @Test
@@ -72,7 +72,9 @@ public class UserServiceTest {
 
     @Test
     void testEmailProcessing() {
-        safeVaultUserService.processUserEmail("onwukalotachukwu@gmail.com", "661908db349dd6078964982c");
+        safeVaultUserService.processUserEmail("onwukalotachukwu210@gmail.com", "661908db349dd6078964982c");
+
+        assertTrue(safeVaultUserService.isMethodEffectOccurred());
     }
 
     @Test
