@@ -9,6 +9,8 @@ import com.lota.SafeVaultBankingApplication.security.models.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +27,7 @@ import java.util.stream.IntStream;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.*;
+import static com.lota.SafeVaultBankingApplication.utils.AppUtil.paginateDataWith;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +84,6 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     @Override
     public String validateOtp(String otp, String userId) {
-        //TODO: what if otp has been verified?
         SafeVaultUser safeVaultUser = findUserById(userId);
         if(safeVaultUser.isOtpVerified()) throw new AppException(OTP_ALREADY_VERIFIED.getMessage());
         if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
@@ -184,14 +186,27 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         userRepository.save(user);
     }
 
-    UserResponseDto viewUser(String userId){
-        SafeVaultUser user = findUserById(userId);
 
+    @Override
+    public UserResponseDto viewCustomer(String userId){
+        SafeVaultUser user = findUserById(userId);
         return mapper.map(user, UserResponseDto.class);
     }
 
-    //TODO: Find a user, return  user response object
-    //TODO: Find all users, return list of user response object
-    //TODO: delete a user, return a string
+    public List<UserResponseDto> viewAllCustomers(int page, int size){
+        Pageable pageRequest = paginateDataWith(page, size);
+        Page<SafeVaultUser> userList = userRepository.findAll(pageRequest);
+
+        return buildCustomerResponseFrom(userList);
+    }
+
+    private List<UserResponseDto> buildCustomerResponseFrom(Page<SafeVaultUser> userList) {
+
+       return userList.getContent()
+               .stream()
+               .map(user -> mapper.map(user, UserResponseDto.class))
+               .toList();
+    }
+    //TODO: delete a user, return a string, necessary?
 
 }
