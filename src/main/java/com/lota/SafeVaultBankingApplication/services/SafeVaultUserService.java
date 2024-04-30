@@ -1,6 +1,9 @@
 package com.lota.SafeVaultBankingApplication.services;
 
+import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
+
+import java.util.List;
 
 public interface SafeVaultUserService {
 
@@ -19,6 +22,12 @@ public interface SafeVaultUserService {
     String setPasscode(String userId, String passcode, String confirmPasscode);
 
     void setAccountNumber(String userId);
+
+    UserResponseDto viewCustomer(String userId);
+
+    List<UserResponseDto> viewAllCustomers(int page, int size);
+
+
 
 
 
