@@ -3,9 +3,12 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.models.Account;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
+import com.lota.SafeVaultBankingApplication.repositories.AccountRepository;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import com.lota.SafeVaultBankingApplication.security.models.Principal;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -37,14 +40,13 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     private final SafeVaultUserRepository userRepository;
     private final SmsSender smsSender;
     private final ModelMapper mapper;
+    private final AccountRepository accountRepository;
+
+    @Getter
     private boolean methodEffectOccurred;
     @Override
     public SafeVaultUser getUserBy(String searchParam) {
         return findUserByEmail(searchParam);
-    }
-
-    public boolean isMethodEffectOccurred() {
-        return methodEffectOccurred;
     }
 
     //TODO:THOUGHT? What if a user doesn't complete a registration flow and some of the user's data has been saved on the system
@@ -190,11 +192,13 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
                 .mapToObj(i -> String.valueOf(random.nextInt(10)))
                 .collect(Collectors.joining());
 
-        user.setAccountNumber(List.of(user.getPhoneNumber().substring(4), "031" + randomNumber));
+        Account account = Account.builder()
+                .safeVaultUser(user)
+                .accountNumber(List.of(user.getPhoneNumber().substring(4), "031" + randomNumber))
+                .build();
 
-        userRepository.save(user);
+        accountRepository.save(account);
     }
-
 
     @Override
     public UserResponseDto viewCustomer(String userId){
