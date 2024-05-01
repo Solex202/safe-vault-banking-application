@@ -38,6 +38,5 @@ public class SafeVaultUser {
     private LocalDateTime dateUpdated;
 
     private List<String> accountNumber;
-    private AccountType accountType;
     private Set<Authority> authorities;
 }
