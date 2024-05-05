@@ -38,9 +38,9 @@ public class UserServiceTest {
 
     @Test
     void validateOtp() {
-        SafeVaultUser user = safeVaultUserService.findUserById("661908db349dd6078964982c");
+        SafeVaultUser user = safeVaultUserService.findUserById("6637f08d9f73f13847de9da9");
         assertFalse(user.isOtpVerified());
-        String response = safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c");
+        String response = safeVaultUserService.validateOtp("098456", "6637f08d9f73f13847de9da9");
 
         assertThat(response, is("OTP VERIFIED SUCCESSFULLY"));
     }
@@ -72,7 +72,7 @@ public class UserServiceTest {
 
     @Test
     void testEmailProcessing() {
-        safeVaultUserService.processUserEmail("onwukalotachukwu210@gmail.com", "661908db349dd6078964982c");
+        safeVaultUserService.processUserEmail("onwukalotachukwu210@gmail.com", "6637f08d9f73f13847de9da9");
 
         assertTrue(safeVaultUserService.isMethodEffectOccurred());
     }
