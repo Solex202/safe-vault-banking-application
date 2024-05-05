@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 public class SafeVaultBankingApplication {
 
-	public static void main(String[] args) {
+	 static public void main(String[] args) {
 		SpringApplication.run(SafeVaultBankingApplication.class, args);
 	}
 }
