@@ -20,7 +20,7 @@ public class SafeVaultUser {
     @Id
     private String id;
     @Email
-    @NonNull
+//    @NonNull
     private String email;
     private String passcode;
     private String firstname;
