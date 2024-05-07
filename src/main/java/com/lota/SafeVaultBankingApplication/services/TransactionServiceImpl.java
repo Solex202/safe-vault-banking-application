@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
+import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.TRANSFER_SUCCESSFUL;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+
     @Override
     public String performTransfer(String userId,FundTransferDto fundTransferDto) {
         if (!accountNumberExists(fundTransferDto.getDestinationAccountNumber())) throw new AppException(ACCOUNT_DOES_NOT_EXISTS.getMessage());
@@ -28,6 +30,12 @@ public class TransactionServiceImpl  implements TransactionService {
 
         Account senderAccount = accountRepository.findBySafeVaultUserId(userId);
         if(fundTransferDto.getAmount() > senderAccount.getBalance()) throw new AppException(ACCOUNT_BALANCE_EXCEEDED.getMessage());
+
+        senderAccount.getAccountNumber().forEach(accountNumber -> {
+                if(accountNumber.equals(fundTransferDto.getDestinationAccountNumber())){
+                    throw new AppException("Sender and receiver account cannot reference same safe vault user");
+                }
+        });
         double balance = senderAccount.getBalance() - fundTransferDto.getAmount();
         senderAccount.setBalance(balance);
 
@@ -38,7 +46,7 @@ public class TransactionServiceImpl  implements TransactionService {
         accountRepository.save(receiverAccount);
 
         saveTransaction(fundTransferDto, senderAccount, receiverAccount);
-        return "Transfer Successful";
+        return TRANSFER_SUCCESSFUL.getMessage();
     }
 
     private void saveTransaction(FundTransferDto fundTransferDto, Account senderAccount, Account receiverAccount) {
