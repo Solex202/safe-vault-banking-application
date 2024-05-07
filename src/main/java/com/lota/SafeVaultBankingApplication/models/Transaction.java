@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDateTime;
 
@@ -16,13 +17,19 @@ public class Transaction {
 
 
     @Id
-    private Long transactionId;
+    private String transactionId;
 
     private String transactionType;
 
-    private Account account;
+    @DocumentReference
+    private Account senderAccount;
+
+    @DocumentReference
+    private Account receiverAccount;
 
     private double amount;
+
+    private String narration;
 
     private LocalDateTime timestamp;
 }
