@@ -10,4 +10,7 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 
     @Query("{'accountNumber' : ?0}")
     Account findByAccountNumber(String destinationAccountNumber);
+
+    @Query("{'accountNumber' : ?0}")
+    boolean existsByAccountNumber(String destinationAccountNumber);
 }
