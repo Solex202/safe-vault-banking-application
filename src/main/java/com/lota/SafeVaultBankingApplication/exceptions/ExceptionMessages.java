@@ -38,7 +38,9 @@ public enum ExceptionMessages {
     PASSCODE_IS_NULL("Please provide passcode here"),
 
     PROFILE_NOT_FOUND("User profile not found "),
-    INVALID_PASSCODE_LENGTH("Passcode must only be 6 digits")
+    INVALID_PASSCODE_LENGTH("Passcode must only be 6 digits"),
+
+    INVALID_TRANSFER_AMOUNT("Transfer amount is greater than account balance")
 
     ;
 
