@@ -90,7 +90,7 @@ public class UserServiceTest {
     @Test
     void testSetPasscode(){
 
-        String response = safeVaultUserService.setPasscode("661908db349dd6078964982c", "121323", "121323");
+        String response = safeVaultUserService.setPasscode("6637f08d9f73f13847de9da9", "121323", "121323");
         assertThat(response, is("Passcode set successfully, continue"));
     }
 
@@ -104,6 +104,6 @@ public class UserServiceTest {
     @Test
     void setAccountNumber(){
 
-        safeVaultUserService.setAccountNumber("661908db349dd6078964982c");
+        safeVaultUserService.setAccountNumber("6637f08d9f73f13847de9da9");
     }
 }
