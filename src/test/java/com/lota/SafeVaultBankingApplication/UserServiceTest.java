@@ -104,6 +104,6 @@ public class UserServiceTest {
     @Test
     void setAccountNumber(){
 
-        safeVaultUserService.setAccountNumber("6637f08d9f73f13847de9da9");
+        safeVaultUserService.generateUserAccountNumber("6637f08d9f73f13847de9da9");
     }
 }
