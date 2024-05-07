@@ -19,7 +19,7 @@ public class TransactionServiceTest {
 
     @Test
     void performTransfer(){
-        FundTransferDto dto =FundTransferDto.builder().amount(-1000).destinationAccountNumber("0317282246").build();
+        FundTransferDto dto = FundTransferDto.builder().amount(3250.50).destinationAccountNumber("0317282246").build();
 
         String response = transactionService.performTransfer("661908db349dd6078964982c", dto);
 
