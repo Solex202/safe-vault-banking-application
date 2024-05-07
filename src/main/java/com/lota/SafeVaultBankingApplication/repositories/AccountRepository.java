@@ -9,8 +9,8 @@ public interface AccountRepository extends MongoRepository<Account, String> {
     Account findBySafeVaultUserId(String userId);
 
     @Query("{'accountNumber' : ?0}")
-    Account findByAccountNumber(String destinationAccountNumber);
+    Account findByAccountNumberIn(String destinationAccountNumber);
 
-    @Query("{'accountNumber' : ?0}")
+    @Query(value = "{ 'accountNumber' : ?0 }", exists = true)
     boolean existsByAccountNumber(String destinationAccountNumber);
 }
