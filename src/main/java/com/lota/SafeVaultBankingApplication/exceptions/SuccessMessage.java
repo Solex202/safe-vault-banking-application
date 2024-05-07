@@ -9,7 +9,10 @@ public enum SuccessMessage {
 
     OTP_RESENT_SUCCESSFULLY("A new otp has been sent to your inbox"),
 
-    PASSCODE_SET_SUCCESSFULLY("Passcode set successfully, continue")
+    PASSCODE_SET_SUCCESSFULLY("Passcode set successfully, continue"),
+
+    TRANSFER_SUCCESSFUL("Transfer Successful")
+
     ;
 
     private final  String message;
