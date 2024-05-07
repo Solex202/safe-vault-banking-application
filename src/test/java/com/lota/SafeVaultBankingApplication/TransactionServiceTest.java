@@ -19,7 +19,7 @@ public class TransactionServiceTest {
 
     @Test
     void performTransfer(){
-        FundTransferDto dto = FundTransferDto.builder().amount(3250.50).destinationAccountNumber("0317282246").build();
+        FundTransferDto dto = FundTransferDto.builder().amount(1000).destinationAccountNumber("0317282246").build();
 
         String response = transactionService.performTransfer("661908db349dd6078964982c", dto);
 
@@ -52,6 +52,15 @@ public class TransactionServiceTest {
         AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
 
         assertThat(exception.getMessage(), is("Please provide a valid amount"));
+    }
+
+    @Test
+    void performTransfer_ThrowExceptionWhenTransferAccountIsSameWithDestinationAccount(){
+        FundTransferDto dto = FundTransferDto.builder().amount(8000).destinationAccountNumber("0311586370").build();
+
+        AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
+
+        assertThat(exception.getMessage(), is("Sender and receiver account cannot reference same safe vault user"));
     }
 
 
