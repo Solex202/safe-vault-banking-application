@@ -17,4 +17,6 @@ public class FundTransferDto {
     private String destinationAccountNumber;
 
     private double amount;
+
+    private String narration;
 }
