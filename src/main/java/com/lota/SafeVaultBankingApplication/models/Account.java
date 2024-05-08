@@ -23,7 +23,8 @@ public class Account {
     private SafeVaultUser safeVaultUser;
     private AccountType accountType;
     private List<String> accountNumber;
-
     private double balance;
+    private int dailyLimit;
+    private int transferLimit;
     private LocalDateTime dateCreated;
 }
