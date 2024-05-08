@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication;
 
+import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -101,4 +104,17 @@ public class UserServiceTest {
         assertThat(exception.getMessage(), is("Passcodes must match"));
     }
 
+    @Test
+    void testViewBankCustomerDetails(){
+        UserResponseDto responseDto = safeVaultUserService.viewCustomer("661908db349dd6078964982c");
+
+        assertThat(responseDto.getEmail(), is("onwukalotachukwu210@gmail.com"));
+    }
+
+    @Test
+    void testViewAllBankCustomerDetails(){
+        List<UserResponseDto> responseDto = safeVaultUserService.viewAllCustomers(1, 10);
+
+        assertThat(responseDto.size(), is(2));
+    }
 }
