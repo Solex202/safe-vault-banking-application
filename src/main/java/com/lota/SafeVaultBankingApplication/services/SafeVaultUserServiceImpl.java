@@ -90,14 +90,27 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     @Override
     public String validateOtp(String otp, String userId) {
         SafeVaultUser safeVaultUser = findUserById(userId);
-        if(safeVaultUser.isOtpVerified()) throw new AppException(OTP_ALREADY_VERIFIED.getMessage());
-        if (safeVaultUser.getOtp().isEmpty()) throw new AppException(OTP_NULL.getMessage());
 
-        final long timeElapsed = ChronoUnit.MINUTES.between(safeVaultUser.getOtpCreatedTime(), LocalDateTime.now());
-            log.info("TIME ELAPSED -----> {}", timeElapsed);
-        if(timeElapsed > 10) throw new AppException(OTP_EXPIRED.getMessage());
+        if (safeVaultUser.isOtpVerified()) {
+            throw new AppException(OTP_ALREADY_VERIFIED.getMessage());
+        }
 
-        if(!safeVaultUser.getOtp().matches(otp)) throw new AppException(INCORRECT_OTP.getMessage());
+        String userOtp = safeVaultUser.getOtp();
+        if (userOtp.isEmpty()) {
+            throw new AppException(OTP_NULL.getMessage());
+        }
+
+        LocalDateTime otpCreationTime = safeVaultUser.getOtpCreatedTime();
+        long timeElapsed = ChronoUnit.MINUTES.between(otpCreationTime, LocalDateTime.now());
+        log.info("TIME ELAPSED -----> {}", timeElapsed);
+
+        if (timeElapsed > 10) {
+            throw new AppException(OTP_EXPIRED.getMessage());
+        }
+
+        if (!userOtp.equals(otp)) {
+            throw new AppException(INCORRECT_OTP.getMessage());
+        }
 
         safeVaultUser.setOtpVerified(true);
         userRepository.save(safeVaultUser);

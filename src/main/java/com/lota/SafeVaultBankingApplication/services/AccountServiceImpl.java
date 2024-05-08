@@ -39,21 +39,30 @@ public class AccountServiceImpl implements AccountService{
                 ));
     }
 
-    public void generateUserAccountNumber(String userId){
-
+    @Override
+    public void generateUserAccountNumber(String userId) {
         SafeVaultUser user = findUserById(userId);
-        Random random = new Random();
+        String randomNumber = generateRandomNumber(7);
 
-        String randomNumber = IntStream.range(0, 7)
-                .mapToObj(i -> String.valueOf(random.nextInt(10)))
-                .collect(Collectors.joining());
-
-        Account account = Account.builder()
-                .safeVaultUser(user)
-                .accountNumber(List.of(user.getPhoneNumber().substring(4), "031" + randomNumber))
-                .build();
+        Account account = buildAccount(user, randomNumber);
 
         accountRepository.save(account);
+    }
+
+    private String generateRandomNumber(int length) {
+        Random random = new Random();
+        return random.ints(0, 10)
+                .limit(length)
+                .mapToObj(Integer::toString)
+                .collect(Collectors.joining());
+    }
+
+    private Account buildAccount(SafeVaultUser user, String randomNumber) {
+        String accountNumber = user.getPhoneNumber().substring(4) + "031" + randomNumber;
+        return Account.builder()
+                .safeVaultUser(user)
+                .accountNumber(List.of(accountNumber))
+                .build();
     }
 
     public Account updateAccount(String userId, UpdateAccountRequest request){
