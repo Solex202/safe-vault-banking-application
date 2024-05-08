@@ -21,8 +21,6 @@ public interface SafeVaultUserService {
 
     String setPasscode(String userId, String passcode, String confirmPasscode);
 
-    void generateUserAccountNumber(String userId);
-
     UserResponseDto viewCustomer(String userId);
 
     List<UserResponseDto> viewAllCustomers(int page, int size);
