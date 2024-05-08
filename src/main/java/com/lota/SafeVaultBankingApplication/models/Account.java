@@ -27,4 +27,5 @@ public class Account {
     private int dailyLimit;
     private int transferLimit;
     private LocalDateTime dateCreated;
+    private LocalDateTime dateUpdated;
 }
