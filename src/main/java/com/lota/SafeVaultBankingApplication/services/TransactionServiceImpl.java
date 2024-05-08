@@ -29,7 +29,9 @@ public class TransactionServiceImpl  implements TransactionService {
         if(fundTransferDto.getAmount() <= 0) throw new AppException(INVALID_TRANSFER_AMOUNT.getMessage());
 
         Account senderAccount = accountRepository.findBySafeVaultUserId(userId);
-        if(fundTransferDto.getAmount() > senderAccount.getBalance()) throw new AppException(ACCOUNT_BALANCE_EXCEEDED.getMessage());
+        if(fundTransferDto.getAmount() > senderAccount.getBalance()) throw new AppException(INSUFFICIENT_BALANCE.getMessage());
+
+        if(fundTransferDto.getAmount() > senderAccount.getTransferLimit()) throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
 
         senderAccount.getAccountNumber().forEach(accountNumber -> {
                 if(accountNumber.equals(fundTransferDto.getDestinationAccountNumber())){
