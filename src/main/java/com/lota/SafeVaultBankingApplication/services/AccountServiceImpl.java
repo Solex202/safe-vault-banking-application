@@ -1,15 +1,18 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 
+import com.lota.SafeVaultBankingApplication.dtos.request.UpdateAccountRequest;
 import com.lota.SafeVaultBankingApplication.models.Account;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.AccountRepository;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -25,6 +28,8 @@ public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
 
     private final SafeVaultUserRepository userRepository;
+
+    private final ModelMapper mapper;
 
 
     public SafeVaultUser findUserById(String id){
@@ -49,5 +54,16 @@ public class AccountServiceImpl implements AccountService{
                 .build();
 
         accountRepository.save(account);
+    }
+
+    public Account updateAccount(String userId, UpdateAccountRequest request){
+
+        Account account = accountRepository.findBySafeVaultUserId(userId);
+
+        mapper.map(request, account);
+
+        account.setDateUpdated(LocalDateTime.now());
+
+        return accountRepository.save(account);
     }
 }
