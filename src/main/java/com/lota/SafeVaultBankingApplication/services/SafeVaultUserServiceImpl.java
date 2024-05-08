@@ -183,23 +183,6 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         return BCrypt.checkpw(password, hashedPassword);
     }
 
-    public void generateUserAccountNumber(String userId){
-
-        SafeVaultUser user = findUserById(userId);
-        Random random = new Random();
-
-        String randomNumber = IntStream.range(0, 7)
-                .mapToObj(i -> String.valueOf(random.nextInt(10)))
-                .collect(Collectors.joining());
-
-        Account account = Account.builder()
-                .safeVaultUser(user)
-                .accountNumber(List.of(user.getPhoneNumber().substring(4), "031" + randomNumber))
-                .build();
-
-        accountRepository.save(account);
-    }
-
     @Override
     public UserResponseDto viewCustomer(String userId){
         SafeVaultUser user = findUserById(userId);
