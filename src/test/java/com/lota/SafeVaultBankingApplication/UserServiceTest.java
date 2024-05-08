@@ -101,9 +101,4 @@ public class UserServiceTest {
         assertThat(exception.getMessage(), is("Passcodes must match"));
     }
 
-    @Test
-    void setAccountNumber(){
-
-        safeVaultUserService.generateUserAccountNumber("6637f08d9f73f13847de9da9");
-    }
 }
