@@ -23,33 +23,70 @@ public class TransactionServiceImpl  implements TransactionService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
 
+
     @Override
-    public String performTransfer(String userId,FundTransferDto fundTransferDto) {
-        if (!accountNumberExists(fundTransferDto.getDestinationAccountNumber())) throw new AppException(ACCOUNT_DOES_NOT_EXISTS.getMessage());
-        if(fundTransferDto.getAmount() <= 0) throw new AppException(INVALID_TRANSFER_AMOUNT.getMessage());
+    public String performTransfer(String userId, FundTransferDto fundTransferDto) {
+        validateTransfer(fundTransferDto);
 
-        Account senderAccount = accountRepository.findBySafeVaultUserId(userId);
-        if(fundTransferDto.getAmount() > senderAccount.getBalance()) throw new AppException(INSUFFICIENT_BALANCE.getMessage());
+        Account senderAccount = getSenderAccount(userId);
+        ensureSufficientBalance(senderAccount, fundTransferDto.getAmount());
+        ensureTransferLimit(senderAccount, fundTransferDto.getAmount());
+        ensureDifferentSenderReceiverAccounts(senderAccount, fundTransferDto.getDestinationAccountNumber());
 
-        if(fundTransferDto.getAmount() > senderAccount.getTransferLimit()) throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
+        double newSenderBalance = senderAccount.getBalance() - fundTransferDto.getAmount();
+        senderAccount.setBalance(newSenderBalance);
 
-        senderAccount.getAccountNumber().forEach(accountNumber -> {
-                if(accountNumber.equals(fundTransferDto.getDestinationAccountNumber())){
-                    throw new AppException("Sender and receiver account cannot reference same safe vault user");
-                }
-        });
-        double balance = senderAccount.getBalance() - fundTransferDto.getAmount();
-        senderAccount.setBalance(balance);
+        Account receiverAccount = getReceiverAccount(fundTransferDto.getDestinationAccountNumber());
+        double newReceiverBalance = receiverAccount.getBalance() + fundTransferDto.getAmount();
+        receiverAccount.setBalance(newReceiverBalance);
 
-        Account receiverAccount = accountRepository.findByAccountNumberIn(fundTransferDto.getDestinationAccountNumber());
-        receiverAccount.setBalance(receiverAccount.getBalance() + fundTransferDto.getAmount());
-
-        accountRepository.save(senderAccount);
-        accountRepository.save(receiverAccount);
+        saveAccounts(senderAccount, receiverAccount);
 
         saveTransaction(fundTransferDto, senderAccount, receiverAccount);
         return TRANSFER_SUCCESSFUL.getMessage();
     }
+
+    private void validateTransfer(FundTransferDto fundTransferDto) {
+        if (!accountNumberExists(fundTransferDto.getDestinationAccountNumber())) {
+            throw new AppException(ACCOUNT_DOES_NOT_EXISTS.getMessage());
+        }
+        if (fundTransferDto.getAmount() <= 0) {
+            throw new AppException(INVALID_TRANSFER_AMOUNT.getMessage());
+        }
+        //TODO: Add validation for daily limit
+    }
+
+    private Account getSenderAccount(String userId) {
+        return accountRepository.findBySafeVaultUserId(userId);
+    }
+
+    private void ensureSufficientBalance(Account senderAccount, double transferAmount) {
+        if (transferAmount > senderAccount.getBalance()) {
+            throw new AppException(INSUFFICIENT_BALANCE.getMessage());
+        }
+    }
+
+    private void ensureTransferLimit(Account senderAccount, double transferAmount) {
+        if (transferAmount > senderAccount.getTransferLimit()) {
+            throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
+        }
+    }
+
+    private void ensureDifferentSenderReceiverAccounts(Account senderAccount, String destinationAccountNumber) {
+        if (senderAccount.getAccountNumber().contains(destinationAccountNumber)) {
+            throw new AppException("Sender and receiver account cannot reference the same safe vault user");
+        }
+    }
+
+    private Account getReceiverAccount(String destinationAccountNumber) {
+        return accountRepository.findByAccountNumberIn(destinationAccountNumber);
+    }
+
+    private void saveAccounts(Account senderAccount, Account receiverAccount) {
+        accountRepository.save(senderAccount);
+        accountRepository.save(receiverAccount);
+    }
+
 
     private void saveTransaction(FundTransferDto fundTransferDto, Account senderAccount, Account receiverAccount) {
         Transaction transaction = Transaction.builder()
