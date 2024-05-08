@@ -84,9 +84,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
 
         safeVaultUserProfile.setDateUpdated(LocalDateTime.now());
 
-        SafeVaultUserProfile updatedProfile = safeVaultUserProfileRepository.save(safeVaultUserProfile);
-        safeVaultUserProfileRepository.save(updatedProfile);
-        return safeVaultUserProfile;
+        return safeVaultUserProfileRepository.save(safeVaultUserProfile);
     }
 
 }
