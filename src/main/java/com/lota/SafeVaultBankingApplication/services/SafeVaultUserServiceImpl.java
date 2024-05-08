@@ -3,7 +3,6 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
-import com.lota.SafeVaultBankingApplication.models.Account;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.AccountRepository;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
@@ -24,9 +23,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.*;
