@@ -40,11 +40,13 @@ public enum ExceptionMessages {
     PROFILE_NOT_FOUND("User profile not found "),
     INVALID_PASSCODE_LENGTH("Passcode must only be 6 digits"),
 
-    ACCOUNT_BALANCE_EXCEEDED("Transfer amount is greater than account balance"),
+    INSUFFICIENT_BALANCE("Insufficient balance"),
 
     ACCOUNT_DOES_NOT_EXISTS("Account number does not exist"),
 
-    INVALID_TRANSFER_AMOUNT("Please provide a valid amount")
+    INVALID_TRANSFER_AMOUNT("Please provide a valid amount"),
+
+    TRANSFER_LIMIT_EXCEEDED("Transfer amount is greater than your transfer limit")
 
     ;
 
