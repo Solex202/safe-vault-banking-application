@@ -8,4 +8,6 @@ public interface AccountService {
     void generateUserAccountNumber(String userId);
 
     Account updateAccount(String userId, UpdateAccountRequest request);
+
+    void resetDailyTransferAmountForAllAccounts();
 }
