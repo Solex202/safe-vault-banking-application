@@ -46,7 +46,9 @@ public enum ExceptionMessages {
 
     INVALID_TRANSFER_AMOUNT("Please provide a valid amount"),
 
-    TRANSFER_LIMIT_EXCEEDED("Transfer amount is greater than your transfer limit")
+    TRANSFER_LIMIT_EXCEEDED("Transfer amount is greater than your transfer limit"),
+
+    DAILY_LIMIT_EXCEEDED("You have exceeded your daily transfer limit"),
 
     ;
 

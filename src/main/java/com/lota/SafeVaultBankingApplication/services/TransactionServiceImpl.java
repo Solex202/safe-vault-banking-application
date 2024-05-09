@@ -33,15 +33,15 @@ public class TransactionServiceImpl  implements TransactionService {
         ensureTransferLimit(senderAccount, fundTransferDto.getAmount());
         ensureDifferentSenderReceiverAccounts(senderAccount, fundTransferDto.getDestinationAccountNumber());
 
-        double newSenderBalance = senderAccount.getBalance() - fundTransferDto.getAmount();
-        senderAccount.setBalance(newSenderBalance);
+        double newSenderBalance = senderAccount.getAccountBalance() - fundTransferDto.getAmount();
+        senderAccount.setAccountBalance(newSenderBalance);
 
         double newTotalDailyTransferAmount = senderAccount.getTotalDailyTransferAmount() + fundTransferDto.getAmount();
         senderAccount.setTotalDailyTransferAmount(newTotalDailyTransferAmount);
 
         Account receiverAccount = getReceiverAccount(fundTransferDto.getDestinationAccountNumber());
-        double newReceiverBalance = receiverAccount.getBalance() + fundTransferDto.getAmount();
-        receiverAccount.setBalance(newReceiverBalance);
+        double newReceiverBalance = receiverAccount.getAccountBalance() + fundTransferDto.getAmount();
+        receiverAccount.setAccountBalance(newReceiverBalance);
 
         saveAccounts(senderAccount, receiverAccount);
 
@@ -56,7 +56,6 @@ public class TransactionServiceImpl  implements TransactionService {
         if (fundTransferDto.getAmount() <= 0) {
             throw new AppException(INVALID_TRANSFER_AMOUNT.getMessage());
         }
-        //TODO: Add validation for daily limit
     }
 
     private Account getSenderAccount(String userId) {
@@ -64,13 +63,13 @@ public class TransactionServiceImpl  implements TransactionService {
     }
 
     private void ensureSufficientBalance(Account senderAccount, double transferAmount) {
-        if (transferAmount > senderAccount.getBalance()) {
+        if (transferAmount > senderAccount.getAccountBalance()) {
             throw new AppException(INSUFFICIENT_BALANCE.getMessage());
         }
     }
 
     private void ensureTransferLimit(Account senderAccount, double transferAmount) {
-        if(senderAccount.getTotalDailyTransferAmount() == senderAccount.getDailyLimit()) throw new AppException("");
+        if(senderAccount.getTotalDailyTransferAmount() == senderAccount.getDailyLimit()) throw new AppException(DAILY_LIMIT_EXCEEDED.getMessage());
         if (transferAmount > senderAccount.getTransferLimit()) {
             throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
         }
