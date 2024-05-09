@@ -36,6 +36,9 @@ public class TransactionServiceImpl  implements TransactionService {
         double newSenderBalance = senderAccount.getBalance() - fundTransferDto.getAmount();
         senderAccount.setBalance(newSenderBalance);
 
+        double newTotalDailyTransferAmount = senderAccount.getTotalDailyTransferAmount() + fundTransferDto.getAmount();
+        senderAccount.setTotalDailyTransferAmount(newTotalDailyTransferAmount);
+
         Account receiverAccount = getReceiverAccount(fundTransferDto.getDestinationAccountNumber());
         double newReceiverBalance = receiverAccount.getBalance() + fundTransferDto.getAmount();
         receiverAccount.setBalance(newReceiverBalance);
@@ -67,6 +70,7 @@ public class TransactionServiceImpl  implements TransactionService {
     }
 
     private void ensureTransferLimit(Account senderAccount, double transferAmount) {
+        if(senderAccount.getTotalDailyTransferAmount() == senderAccount.getDailyLimit()) throw new AppException("");
         if (transferAmount > senderAccount.getTransferLimit()) {
             throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
         }
