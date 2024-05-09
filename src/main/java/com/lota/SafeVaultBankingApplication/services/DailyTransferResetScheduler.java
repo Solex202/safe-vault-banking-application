@@ -10,14 +10,11 @@ public class DailyTransferResetScheduler {
     @Autowired
     private AccountService accountService;
 
-    @Scheduled(cron = "16 12 * * * *") // Midnight every day
+    @Scheduled(cron = "02 58 * * * *") // Midnight every day
     public void resetDailyTransferAmount() {
-        System.out.println("HAPPENDED");
+        System.out.println("HAPPENED");
         accountService.resetDailyTransferAmountForAllAccounts();
     }
 
-//    @Scheduled(cron = "10 12 * * * *") // Midnight every day
-//    public void saySomething() {
-//        System.out.println("THIS IS A THURSDAY AFTERNOON");
-//    }
+
 }

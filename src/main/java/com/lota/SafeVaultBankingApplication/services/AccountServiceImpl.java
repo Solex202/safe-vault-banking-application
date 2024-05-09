@@ -68,6 +68,7 @@ public class AccountServiceImpl implements AccountService{
         return Account.builder()
                 .safeVaultUser(user)
                 .accountNumber(accountNumber)
+                .dateCreated(LocalDateTime.now())
                 .build();
     }
 
@@ -88,7 +89,9 @@ public class AccountServiceImpl implements AccountService{
         Query query = new Query();
         Update update = new Update()
                 .set("totalDailyTransferAmount", 0.0)
+                .rename("balance", "accountBalance")
                 .set("dateUpdated", LocalDateTime.now());
+
 
         // Perform the update for all documents
         mongoTemplate.updateMulti(query, update, Account.class);
