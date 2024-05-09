@@ -9,6 +9,10 @@ import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.USER_NOT_FOUND;
 
@@ -31,6 +34,9 @@ public class AccountServiceImpl implements AccountService{
 
     private final ModelMapper mapper;
 
+//    @Autowired
+    private final MongoTemplate mongoTemplate;
+
 
     public SafeVaultUser findUserById(String id){
         return userRepository.findById(id)
@@ -42,28 +48,29 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void generateUserAccountNumber(String userId) {
         SafeVaultUser user = findUserById(userId);
-        String randomNumber = generateRandomNumber(7);
+        String randomNumber = generateRandomNumber();
 
         Account account = buildAccount(user, randomNumber);
 
         accountRepository.save(account);
     }
 
-    private String generateRandomNumber(int length) {
+    private String generateRandomNumber() {
         Random random = new Random();
         return random.ints(0, 10)
-                .limit(length)
+                .limit(7)
                 .mapToObj(Integer::toString)
                 .collect(Collectors.joining());
     }
 
     private Account buildAccount(SafeVaultUser user, String randomNumber) {
-        String accountNumber = user.getPhoneNumber().substring(4) + "031" + randomNumber;
+        List<String> accountNumber = List.of(user.getPhoneNumber().substring(4) , "031" + randomNumber);
         return Account.builder()
                 .safeVaultUser(user)
-                .accountNumber(List.of(accountNumber))
+                .accountNumber(accountNumber)
                 .build();
     }
+
 
     public Account updateAccount(String userId, UpdateAccountRequest request){
 
@@ -74,5 +81,18 @@ public class AccountServiceImpl implements AccountService{
         account.setDateUpdated(LocalDateTime.now());
 
         return accountRepository.save(account);
+    }
+
+    public void resetDailyTransferAmountForAllAccounts() {
+        // Prepare the update
+        Query query = new Query();
+        Update update = new Update()
+                .set("totalDailyTransferAmount", 0.0)
+                .set("dateUpdated", LocalDateTime.now());
+
+        // Perform the update for all documents
+        mongoTemplate.updateMulti(query, update, Account.class);
+
+        System.out.println("Daily transfer amount reset for all accounts.");
     }
 }
