@@ -9,10 +9,8 @@ import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.query.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.USER_NOT_FOUND;
+import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +32,6 @@ public class AccountServiceImpl implements AccountService{
 
     private final ModelMapper mapper;
 
-//    @Autowired
     private final MongoTemplate mongoTemplate;
 
 
@@ -89,7 +86,7 @@ public class AccountServiceImpl implements AccountService{
         Query query = new Query();
         Update update = new Update()
                 .set("totalDailyTransferAmount", 0.0)
-                .rename("balance", "accountBalance")
+//                .rename("balance", "accountBalance")
                 .set("dateUpdated", LocalDateTime.now());
 
 

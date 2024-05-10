@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ExceptionMessages {
 
-    AUTHENTICATION_FAILURE("FAiled to authenticate request"),
+    AUTHENTICATION_FAILURE("Failed to authenticate request"),
 
     UNSUPPORTED_AUTHENTICATION_TYPE("Unsupported authentication type"),
 
@@ -49,6 +49,8 @@ public enum ExceptionMessages {
     TRANSFER_LIMIT_EXCEEDED("Transfer amount is greater than your transfer limit"),
 
     DAILY_LIMIT_EXCEEDED("You have exceeded your daily transfer limit"),
+
+    SAME_USER_TRANSFER("Sender and receiver account cannot reference the same safe vault user"),
 
     ;
 
