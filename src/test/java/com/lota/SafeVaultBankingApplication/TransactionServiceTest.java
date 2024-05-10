@@ -1,6 +1,7 @@
 package com.lota.SafeVaultBankingApplication;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.FundTransferDto;
+import com.lota.SafeVaultBankingApplication.dtos.response.ViewTransactionResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.services.TransactionService;
 import org.junit.jupiter.api.Test;
@@ -61,6 +62,14 @@ public class TransactionServiceTest {
         AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
 
         assertThat(exception.getMessage(), is("Sender and receiver account cannot reference same safe vault user"));
+    }
+
+    @Test
+    void viewTransactions(){
+
+        ViewTransactionResponseDto responseDto = transactionService.viewTransaction("663b919f51a7fd120193e746");
+
+        assertThat(responseDto.getAmount(), is(500.0));
     }
 
 
