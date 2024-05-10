@@ -77,7 +77,7 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private void ensureDifferentSenderReceiverAccounts(Account senderAccount, String destinationAccountNumber) {
         if (senderAccount.getAccountNumber().contains(destinationAccountNumber)) {
-            throw new AppException("Sender and receiver account cannot reference the same safe vault user");
+            throw new AppException(SAME_USER_TRANSFER.getMessage());
         }
     }
 
@@ -107,4 +107,6 @@ public class TransactionServiceImpl  implements TransactionService {
     private boolean accountNumberExists(String destinationAccountNumber) {
        return accountRepository.existsByAccountNumber(destinationAccountNumber);
     }
+
+
 }
