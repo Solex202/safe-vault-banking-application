@@ -52,6 +52,8 @@ public enum ExceptionMessages {
 
     SAME_USER_TRANSFER("Sender and receiver account cannot reference the same safe vault user"),
 
+    TRANSACTION_NOT_FOUND("Transaction not found")
+
     ;
 
     private final String message;
