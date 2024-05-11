@@ -198,6 +198,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         return mapper.map(user, UserResponseDto.class);
     }
 
+    @Override
     public List<UserResponseDto> viewAllCustomers(int page, int size){
         Pageable pageRequest = paginateDataWith(page, size);
         Page<SafeVaultUser> userList = userRepository.findAll(pageRequest);
