@@ -1,19 +1,27 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.FundTransferDto;
+import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
+import com.lota.SafeVaultBankingApplication.dtos.response.ViewTransactionResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.AppException;
 import com.lota.SafeVaultBankingApplication.models.Account;
+import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.models.Transaction;
 import com.lota.SafeVaultBankingApplication.repositories.AccountRepository;
 import com.lota.SafeVaultBankingApplication.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.lota.SafeVaultBankingApplication.exceptions.ExceptionMessages.*;
 import static com.lota.SafeVaultBankingApplication.exceptions.SuccessMessage.TRANSFER_SUCCESSFUL;
+import static com.lota.SafeVaultBankingApplication.utils.AppUtil.paginateDataWith;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +30,12 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+    private final ModelMapper mapper;
 
+    private Transaction getTransaction(String transactionId) {
+        return transactionRepository.findById(transactionId)
+                .orElseThrow(()-> new AppException(TRANSACTION_NOT_FOUND.getMessage()));
+    }
 
     @Override
     public String performTransfer(String userId, FundTransferDto fundTransferDto) {
@@ -69,7 +82,8 @@ public class TransactionServiceImpl  implements TransactionService {
     }
 
     private void ensureTransferLimit(Account senderAccount, double transferAmount) {
-        if(senderAccount.getTotalDailyTransferAmount() == senderAccount.getDailyLimit()) throw new AppException(DAILY_LIMIT_EXCEEDED.getMessage());
+        if(senderAccount.getTotalDailyTransferAmount() == senderAccount.getDailyLimit() ||
+                senderAccount.getTotalDailyTransferAmount() + transferAmount >= senderAccount.getDailyLimit()) throw new AppException(DAILY_LIMIT_EXCEEDED.getMessage());
         if (transferAmount > senderAccount.getTransferLimit()) {
             throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
         }
@@ -106,6 +120,33 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private boolean accountNumberExists(String destinationAccountNumber) {
        return accountRepository.existsByAccountNumber(destinationAccountNumber);
+    }
+
+
+    @Override
+    public ViewTransactionResponseDto viewTransaction(String transactionId){
+        Transaction transaction = getTransaction(transactionId);
+        ViewTransactionResponseDto dto = mapper.map(transaction, ViewTransactionResponseDto.class);
+        dto.setReceiverAccountNumber(transaction.getReceiverAccount().getAccountNumber().get(1));
+        dto.setSenderAccountNumber(transaction.getSenderAccount().getAccountNumber().get(1));
+
+        log.info("TRANSACTION RESPONSE {}", dto);
+        return dto;
+    }
+
+    public List<ViewTransactionResponseDto> viewAllTransactions(int page, int size){
+        Pageable pageRequest = paginateDataWith(page, size);
+        Page<Transaction> userList = transactionRepository.findAll(pageRequest);
+
+        return buildTransactionResponseFrom(userList);
+    }
+
+    private List<ViewTransactionResponseDto> buildTransactionResponseFrom(Page<Transaction> transactions) {
+
+        return transactions.getContent()
+                .stream()
+                .map(transaction -> mapper.map(transaction, ViewTransactionResponseDto.class))
+                .toList();
     }
 
 
