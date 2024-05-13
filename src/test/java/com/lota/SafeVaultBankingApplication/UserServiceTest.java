@@ -1,7 +1,7 @@
 package com.lota.SafeVaultBankingApplication;
 
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
-import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import org.junit.jupiter.api.Test;
@@ -30,12 +30,12 @@ public class UserServiceTest {
 
     @Test
     void processPhoneNumber_ThrowExceptionIfPhoneNumberAlreadyExists() {
-        assertThrows(AppException.class, () -> safeVaultUserService.processUserPhoneNumber("+2349034653698"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.processUserPhoneNumber("+2349034653698"));
     }
 
     @Test
     void processPhoneNumber_ThrowExceptionIfPhoneNumberIsEmpty() {
-        assertThrows(AppException.class, () -> safeVaultUserService.processUserPhoneNumber(""));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.processUserPhoneNumber(""));
     }
 
 
@@ -57,13 +57,13 @@ public class UserServiceTest {
     @Test
     void validateOtp_ThrowException_If_OtpIsNull() {
 
-        assertThrows(AppException.class, () -> safeVaultUserService.validateOtp("", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.validateOtp("", "661908db349dd6078964982c"));
     }
 
     @Test
     void validateOtp_ThrowException_If_OtpHasExpired() {
 
-        assertThrows(AppException.class, () -> safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c"));
     }
 
     @Test
@@ -82,12 +82,12 @@ public class UserServiceTest {
 
     @Test
     void testEmailProcessing_ThrowExceptionWhenEmailIsInvalid() {
-        assertThrows(AppException.class, () -> safeVaultUserService.processUserEmail("onwukalotachukwu@", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.processUserEmail("onwukalotachukwu@", "661908db349dd6078964982c"));
     }
 
     @Test
     void testEmailProcessing_ThrowExceptionWhenEmailIsNull() {
-        assertThrows(AppException.class, () -> safeVaultUserService.processUserEmail("", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.processUserEmail("", "661908db349dd6078964982c"));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class UserServiceTest {
     @Test
     void testSetPasscode_ThrowExceptionIfPasscodesDoesNotMatch(){
 
-        AppException exception = assertThrows(AppException.class, ()->safeVaultUserService.setPasscode("661908db349dd6078964982c", "121323", "12132324444"));
+        SafeVaultException exception = assertThrows(SafeVaultException.class, ()->safeVaultUserService.setPasscode("661908db349dd6078964982c", "121323", "12132324444"));
         assertThat(exception.getMessage(), is("Passcodes must match"));
     }
 

@@ -2,7 +2,7 @@ package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
-import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.repositories.AccountRepository;
 import com.lota.SafeVaultBankingApplication.repositories.SafeVaultUserRepository;
@@ -71,7 +71,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     @Override
     public void processUserPhoneNumber(String  phoneNumber) {
-        if(phoneNumber.isEmpty()) throw new AppException(PHONE_NUMBER_IS_NULL.getMessage());
+        if(phoneNumber.isEmpty()) throw new SafeVaultException(PHONE_NUMBER_IS_NULL.getMessage());
 //
 //        boolean isPhoneNumberExists = userRepository.existsByPhoneNumber(phoneNumber);
 //        if (isPhoneNumberExists) throw new AppException(ACCOUNT_ALREADY_EXISTS.getMessage());
@@ -92,12 +92,12 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         SafeVaultUser safeVaultUser = findUserById(userId);
 
         if (safeVaultUser.isOtpVerified()) {
-            throw new AppException(OTP_ALREADY_VERIFIED.getMessage());
+            throw new SafeVaultException(OTP_ALREADY_VERIFIED.getMessage());
         }
 
         String userOtp = safeVaultUser.getOtp();
         if (userOtp.isEmpty()) {
-            throw new AppException(OTP_NULL.getMessage());
+            throw new SafeVaultException(OTP_NULL.getMessage());
         }
 
         LocalDateTime otpCreationTime = safeVaultUser.getOtpCreatedTime();
@@ -105,11 +105,11 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
         log.info("TIME ELAPSED -----> {}", timeElapsed);
 
         if (timeElapsed > 10) {
-            throw new AppException(OTP_EXPIRED.getMessage());
+            throw new SafeVaultException(OTP_EXPIRED.getMessage());
         }
 
         if (!userOtp.equals(otp)) {
-            throw new AppException(INCORRECT_OTP.getMessage());
+            throw new SafeVaultException(INCORRECT_OTP.getMessage());
         }
 
         safeVaultUser.setOtpVerified(true);
@@ -139,7 +139,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 //        String regex = "((^+)(234){1}[0–9]{10})|((^234)[0–9]{10})|((^0)(7|8|9){1}(0|1){1}[0–9]{8})";
 //        if (!phoneNumber.matches(regex)) throw new AppException(INVALID_PHONENUMBER.toString());
 
-        if(phoneNumber.length() != 11) throw new AppException(INVALID_PHONENUMBER.getMessage());
+        if(phoneNumber.length() != 11) throw new SafeVaultException(INVALID_PHONENUMBER.getMessage());
 
     }
     @Override
@@ -154,8 +154,8 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     private void validateEmail(String email){
         String regex ="^(.+)@(\\S+)$";
-        if (email.isEmpty()) throw new AppException(EMAIL_IS_NULL.getMessage());
-        if (!email.matches(regex)) throw new AppException(INCORRECT_EMAIL.getMessage());
+        if (email.isEmpty()) throw new SafeVaultException(EMAIL_IS_NULL.getMessage());
+        if (!email.matches(regex)) throw new SafeVaultException(INCORRECT_EMAIL.getMessage());
     }
 
     private boolean containsOnlyNumbers(String str) {
@@ -177,10 +177,10 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
 
     private void validatePasscode(String passcode, String confirmPasscode) {
-        if(passcode.isEmpty() || confirmPasscode.isEmpty()) throw new AppException(PASSCODE_IS_NULL.getMessage());
-        if (!containsOnlyNumbers(passcode) || !containsOnlyNumbers(confirmPasscode)) throw new AppException(INVALID_PASSCODE.getMessage());
-        if(passcode.length() != 6 || confirmPasscode.length() != 6) throw new AppException(INVALID_PASSCODE_LENGTH.getMessage());
-        if (!passcode.matches(confirmPasscode)) throw new AppException(PASSCODES_DO_NOT_MATCH.getMessage());
+        if(passcode.isEmpty() || confirmPasscode.isEmpty()) throw new SafeVaultException(PASSCODE_IS_NULL.getMessage());
+        if (!containsOnlyNumbers(passcode) || !containsOnlyNumbers(confirmPasscode)) throw new SafeVaultException(INVALID_PASSCODE.getMessage());
+        if(passcode.length() != 6 || confirmPasscode.length() != 6) throw new SafeVaultException(INVALID_PASSCODE_LENGTH.getMessage());
+        if (!passcode.matches(confirmPasscode)) throw new SafeVaultException(PASSCODES_DO_NOT_MATCH.getMessage());
     }
 
     public static String hashPassword(String password) {

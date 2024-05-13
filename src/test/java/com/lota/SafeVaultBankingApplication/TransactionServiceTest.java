@@ -2,7 +2,7 @@ package com.lota.SafeVaultBankingApplication;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.FundTransferDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.ViewTransactionResponseDto;
-import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.services.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class TransactionServiceTest {
     void performTransfer_ThrowExceptionWhenAccountNumberDoesNotExist(){
         FundTransferDto dto = FundTransferDto.builder().amount(1000).destinationAccountNumber("0317282240").build();
 
-        AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
+        SafeVaultException exception = assertThrows(SafeVaultException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
 
         assertThat(exception.getMessage(), is("Account number does not exist"));
     }
@@ -41,7 +41,7 @@ public class TransactionServiceTest {
     void performTransfer_ThrowExceptionWhenTransferAmountIsGreaterThanAccountBalance(){
         FundTransferDto dto = FundTransferDto.builder().amount(18000).destinationAccountNumber("0317282246").build();
 
-        AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
+        SafeVaultException exception = assertThrows(SafeVaultException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
 
         assertThat(exception.getMessage(), is("Transfer amount is greater than account balance"));
     }
@@ -50,7 +50,7 @@ public class TransactionServiceTest {
     void performTransfer_ThrowExceptionWhenTransferAmountIsLessThanOrEqualToZero(){
         FundTransferDto dto = FundTransferDto.builder().amount(-8000).destinationAccountNumber("0317282246").build();
 
-        AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
+        SafeVaultException exception = assertThrows(SafeVaultException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
 
         assertThat(exception.getMessage(), is("Please provide a valid amount"));
     }
@@ -59,7 +59,7 @@ public class TransactionServiceTest {
     void performTransfer_ThrowExceptionWhenTransferAccountIsSameWithDestinationAccount(){
         FundTransferDto dto = FundTransferDto.builder().amount(8000).destinationAccountNumber("0311586370").build();
 
-        AppException exception = assertThrows(AppException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
+        SafeVaultException exception = assertThrows(SafeVaultException.class,()->transactionService.performTransfer("661908db349dd6078964982c", dto));
 
         assertThat(exception.getMessage(), is("Sender and receiver account cannot reference same safe vault user"));
     }

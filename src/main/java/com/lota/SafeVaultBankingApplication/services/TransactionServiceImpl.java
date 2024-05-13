@@ -1,11 +1,9 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.FundTransferDto;
-import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.ViewTransactionResponseDto;
-import com.lota.SafeVaultBankingApplication.exceptions.AppException;
+import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.Account;
-import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.models.Transaction;
 import com.lota.SafeVaultBankingApplication.repositories.AccountRepository;
 import com.lota.SafeVaultBankingApplication.repositories.TransactionRepository;
@@ -34,7 +32,7 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private Transaction getTransaction(String transactionId) {
         return transactionRepository.findById(transactionId)
-                .orElseThrow(()-> new AppException(TRANSACTION_NOT_FOUND.getMessage()));
+                .orElseThrow(()-> new SafeVaultException(TRANSACTION_NOT_FOUND.getMessage()));
     }
 
     @Override
@@ -64,10 +62,10 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private void validateTransfer(FundTransferDto fundTransferDto) {
         if (!accountNumberExists(fundTransferDto.getDestinationAccountNumber())) {
-            throw new AppException(ACCOUNT_DOES_NOT_EXISTS.getMessage());
+            throw new SafeVaultException(ACCOUNT_DOES_NOT_EXISTS.getMessage());
         }
         if (fundTransferDto.getAmount() <= 0) {
-            throw new AppException(INVALID_TRANSFER_AMOUNT.getMessage());
+            throw new SafeVaultException(INVALID_TRANSFER_AMOUNT.getMessage());
         }
     }
 
@@ -77,21 +75,20 @@ public class TransactionServiceImpl  implements TransactionService {
 
     private void ensureSufficientBalance(Account senderAccount, double transferAmount) {
         if (transferAmount > senderAccount.getAccountBalance()) {
-            throw new AppException(INSUFFICIENT_BALANCE.getMessage());
+            throw new SafeVaultException(INSUFFICIENT_BALANCE.getMessage());
         }
     }
 
     private void ensureTransferLimit(Account senderAccount, double transferAmount) {
-        if(senderAccount.getTotalDailyTransferAmount() == senderAccount.getDailyLimit() ||
-                senderAccount.getTotalDailyTransferAmount() + transferAmount >= senderAccount.getDailyLimit()) throw new AppException(DAILY_LIMIT_EXCEEDED.getMessage());
+        if(senderAccount.getTotalDailyTransferAmount() + transferAmount >= senderAccount.getDailyLimit()) throw new SafeVaultException(DAILY_LIMIT_EXCEEDED.getMessage());
         if (transferAmount > senderAccount.getTransferLimit()) {
-            throw new AppException(TRANSFER_LIMIT_EXCEEDED.getMessage());
+            throw new SafeVaultException(TRANSFER_LIMIT_EXCEEDED.getMessage());
         }
     }
 
     private void ensureDifferentSenderReceiverAccounts(Account senderAccount, String destinationAccountNumber) {
         if (senderAccount.getAccountNumber().contains(destinationAccountNumber)) {
-            throw new AppException(SAME_USER_TRANSFER.getMessage());
+            throw new SafeVaultException(SAME_USER_TRANSFER.getMessage());
         }
     }
 
