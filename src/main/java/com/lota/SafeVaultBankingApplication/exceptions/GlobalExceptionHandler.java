@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class GlobalExceptionMessage {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler()
     public ResponseEntity<Object> handleAppException(AppException e){
