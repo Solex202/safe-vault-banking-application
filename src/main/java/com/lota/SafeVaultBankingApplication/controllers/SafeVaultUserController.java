@@ -33,4 +33,20 @@ public class SafeVaultUserController {
 
         return new ResponseEntity<>(HttpStatus.CONTINUE);
     }
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<?> validateOtp(@AuthenticationPrincipal String userId, @RequestBody String otp){
+
+        String response = safeVaultUserService.validateOtp(userId, otp);
+
+        return new ResponseEntity<>(response, HttpStatus.CONTINUE);
+    }
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<?> regenerateOtp(@AuthenticationPrincipal String userId){
+
+        String response = safeVaultUserService.regenerateOtp(userId);
+
+        return new ResponseEntity<>(response, HttpStatus.CONTINUE);
+    }
 }
