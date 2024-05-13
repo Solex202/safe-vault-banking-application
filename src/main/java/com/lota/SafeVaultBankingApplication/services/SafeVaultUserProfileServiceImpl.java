@@ -4,8 +4,7 @@ package com.lota.SafeVaultBankingApplication.services;
 import com.lota.SafeVaultBankingApplication.dtos.request.CreateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.request.UpdateProfileRequest;
 import com.lota.SafeVaultBankingApplication.dtos.response.CreateProfileResponse;
-import com.lota.SafeVaultBankingApplication.exceptions.AppException;
-import com.lota.SafeVaultBankingApplication.mapper.ApplicationMapper;
+import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.NextOfKin;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUserProfile;
@@ -78,7 +77,7 @@ public class SafeVaultUserProfileServiceImpl implements SafeVaultUserProfileServ
     public SafeVaultUserProfile updateUserProfile(String userProfileId,  UpdateProfileRequest request) {
 
         SafeVaultUserProfile safeVaultUserProfile = safeVaultUserProfileRepository.findBySafeVaultUserId(userProfileId)
-                .orElseThrow(()-> new AppException(PROFILE_NOT_FOUND.getMessage()));
+                .orElseThrow(()-> new SafeVaultException(PROFILE_NOT_FOUND.getMessage()));
          mapper.map(request, safeVaultUserProfile);
          safeVaultUserProfile.setAge(calculateAge(request.getDateOfBirth()));
 
