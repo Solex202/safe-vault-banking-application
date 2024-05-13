@@ -13,9 +13,9 @@ public interface SafeVaultUserService {
 
     String regenerateOtp(String userId);
 
-    void processUserEmail(String email, String userId);
+    void processUserEmail( String userId,String email);
 
-    String validateOtp(String otp, String userId);
+    String validateOtp(String userId,String otp);
 
     SafeVaultUser findUserById(String id);
 

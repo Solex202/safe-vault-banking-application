@@ -43,7 +43,7 @@ public class UserServiceTest {
     void validateOtp() {
         SafeVaultUser user = safeVaultUserService.findUserById("6637f08d9f73f13847de9da9");
         assertFalse(user.isOtpVerified());
-        String response = safeVaultUserService.validateOtp("098456", "6637f08d9f73f13847de9da9");
+        String response = safeVaultUserService.validateOtp("6637f08d9f73f13847de9da9","098456");
 
         assertThat(response, is("OTP VERIFIED SUCCESSFULLY"));
     }
@@ -51,19 +51,19 @@ public class UserServiceTest {
     @Test
     void validateOtp_ThrowException_If_UserIdIsNotValid() {
 
-        assertThrows(UsernameNotFoundException.class, () -> safeVaultUserService.validateOtp("670376", "invalid id"));
+        assertThrows(UsernameNotFoundException.class, () -> safeVaultUserService.validateOtp("invalid id","670376" ));
     }
 
     @Test
     void validateOtp_ThrowException_If_OtpIsNull() {
 
-        assertThrows(SafeVaultException.class, () -> safeVaultUserService.validateOtp("", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.validateOtp("661908db349dd6078964982c","" ));
     }
 
     @Test
     void validateOtp_ThrowException_If_OtpHasExpired() {
 
-        assertThrows(SafeVaultException.class, () -> safeVaultUserService.validateOtp("670376", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.validateOtp("661908db349dd6078964982c","670376"));
     }
 
     @Test
@@ -75,14 +75,14 @@ public class UserServiceTest {
 
     @Test
     void testEmailProcessing() {
-        safeVaultUserService.processUserEmail("onwukalotachukwu210@gmail.com", "6637f08d9f73f13847de9da9");
+        safeVaultUserService.processUserEmail( "6637f08d9f73f13847de9da9","onwukalotachukwu210@gmail.com");
 
         assertTrue(safeVaultUserService.isMethodEffectOccurred());
     }
 
     @Test
     void testEmailProcessing_ThrowExceptionWhenEmailIsInvalid() {
-        assertThrows(SafeVaultException.class, () -> safeVaultUserService.processUserEmail("onwukalotachukwu@", "661908db349dd6078964982c"));
+        assertThrows(SafeVaultException.class, () -> safeVaultUserService.processUserEmail( "661908db349dd6078964982c","onwukalotachukwu@"));
     }
 
     @Test

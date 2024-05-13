@@ -88,7 +88,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
 
     @Override
-    public String validateOtp(String otp, String userId) {
+    public String validateOtp(String userId,String otp) {
         SafeVaultUser safeVaultUser = findUserById(userId);
 
         if (safeVaultUser.isOtpVerified()) {
@@ -143,7 +143,7 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
 
     }
     @Override
-    public void processUserEmail(String email, String userId) {
+    public void processUserEmail(String userId,String email) {
         SafeVaultUser user =findUserById(userId);
         validateEmail(email);
         user.setEmail(email);
