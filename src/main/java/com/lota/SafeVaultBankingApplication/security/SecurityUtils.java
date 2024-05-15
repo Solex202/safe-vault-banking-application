@@ -8,6 +8,7 @@ public class SecurityUtils {
         return Set.of(
                 "/auth/login",
                 "/users",
+                "/users/process-phoneNumber",
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
