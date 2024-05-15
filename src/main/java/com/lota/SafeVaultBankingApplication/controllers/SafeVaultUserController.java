@@ -1,15 +1,15 @@
 package com.lota.SafeVaultBankingApplication.controllers;
 
+import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/users")
 @RestController
@@ -19,7 +19,7 @@ public class SafeVaultUserController {
     private final SafeVaultUserService safeVaultUserService;
 
     @PostMapping("/process-phoneNumber")
-    public ResponseEntity<?> processPhoneNumber(@RequestBody String phoneNumber){
+    public ResponseEntity<?> processPhoneNumber(@RequestParam String phoneNumber){
 
         safeVaultUserService.processUserPhoneNumber(phoneNumber);
 
@@ -42,11 +42,27 @@ public class SafeVaultUserController {
         return new ResponseEntity<>(response, HttpStatus.CONTINUE);
     }
 
-    @PostMapping("/validate-otp")
+    @PostMapping("/regenerate-otp")
     public ResponseEntity<?> regenerateOtp(@AuthenticationPrincipal String userId){
 
         String response = safeVaultUserService.regenerateOtp(userId);
 
         return new ResponseEntity<>(response, HttpStatus.CONTINUE);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> viewUser(@AuthenticationPrincipal String userId){
+
+        UserResponseDto response = safeVaultUserService.viewCustomer(userId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/view")
+    public ResponseEntity<?> viewAllUser(@RequestParam int page , @RequestParam int size){
+
+        List<UserResponseDto> response = safeVaultUserService.viewAllCustomers(page, size);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
