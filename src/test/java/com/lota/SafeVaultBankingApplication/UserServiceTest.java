@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication;
 
+import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
@@ -93,7 +94,9 @@ public class UserServiceTest {
     @Test
     void testSetPasscode(){
 
-        String response = safeVaultUserService.setPasscode("6637f08d9f73f13847de9da9", "121323", "121323");
+        SetPasscodeDto dto = SetPasscodeDto.builder().passcode("121323").confirmPasscode("121323").build();
+
+        String response = safeVaultUserService.setPasscode("6637f08d9f73f13847de9da9",dto);
         assertThat(response, is("Passcode set successfully, continue"));
     }
 
