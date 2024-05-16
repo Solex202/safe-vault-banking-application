@@ -131,19 +131,17 @@ public class TransactionServiceImpl  implements TransactionService {
         return dto;
     }
 
-    public List<ViewTransactionResponseDto> viewAllTransactions(int page, int size){
+    public Page<ViewTransactionResponseDto> viewAllTransactions(int page, int size){
         Pageable pageRequest = paginateDataWith(page, size);
         Page<Transaction> userList = transactionRepository.findAll(pageRequest);
 
         return buildTransactionResponseFrom(userList);
     }
 
-    private List<ViewTransactionResponseDto> buildTransactionResponseFrom(Page<Transaction> transactions) {
+    private Page<ViewTransactionResponseDto> buildTransactionResponseFrom(Page<Transaction> transactions) {
 
-        return transactions.getContent()
-                .stream()
-                .map(transaction -> mapper.map(transaction, ViewTransactionResponseDto.class))
-                .toList();
+        return transactions
+                .map(transaction -> mapper.map(transaction, ViewTransactionResponseDto.class));
     }
 
 
