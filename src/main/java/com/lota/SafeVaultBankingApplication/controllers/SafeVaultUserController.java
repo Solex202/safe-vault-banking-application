@@ -51,14 +51,14 @@ public class SafeVaultUserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> viewUser(@AuthenticationPrincipal String userId){
+    public ResponseEntity<?> viewUser(@RequestParam String userId){
 
         UserResponseDto response = safeVaultUserService.viewCustomer(userId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/view")
+    @GetMapping("/view-all")
     public ResponseEntity<?> viewAllUser(@RequestParam int page , @RequestParam int size){
 
         List<UserResponseDto> response = safeVaultUserService.viewAllCustomers(page, size);
