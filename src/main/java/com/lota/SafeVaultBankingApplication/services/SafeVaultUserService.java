@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication.services;
 
+import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
 
@@ -19,7 +20,7 @@ public interface SafeVaultUserService {
 
     SafeVaultUser findUserById(String id);
 
-    String setPasscode(String userId, String passcode, String confirmPasscode);
+    String setPasscode(String userId, SetPasscodeDto setPasscodeDto);
 
     UserResponseDto viewCustomer(String userId);
 
