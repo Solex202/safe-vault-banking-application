@@ -5,6 +5,7 @@ import com.lota.SafeVaultBankingApplication.dtos.request.FundTransferDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.ViewTransactionResponseDto;
 import com.lota.SafeVaultBankingApplication.services.TransactionService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,7 +36,7 @@ public class TransactionUserController {
 
     @GetMapping("/view-transactions}")
     public ResponseEntity<?> viewAllTransactions(@RequestParam int page, @RequestParam int size){
-        List<ViewTransactionResponseDto> responseDto = transactionService.viewAllTransactions(page, size);
+        Page<ViewTransactionResponseDto> responseDto = transactionService.viewAllTransactions(page, size);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
