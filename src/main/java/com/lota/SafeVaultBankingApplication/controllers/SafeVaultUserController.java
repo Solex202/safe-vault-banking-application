@@ -1,5 +1,6 @@
 package com.lota.SafeVaultBankingApplication.controllers;
 
+import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -27,7 +28,7 @@ public class SafeVaultUserController {
     }
 
     @PostMapping("/process-email")
-    public ResponseEntity<?> processEmail(@AuthenticationPrincipal String userId, @RequestBody String email){
+    public ResponseEntity<?> processEmail(@RequestParam String userId, @RequestBody String email){
 
         safeVaultUserService.processUserEmail(userId, email);
 
@@ -35,7 +36,7 @@ public class SafeVaultUserController {
     }
 
     @PostMapping("/validate-otp")
-    public ResponseEntity<?> validateOtp(@AuthenticationPrincipal String userId, @RequestBody String otp){
+    public ResponseEntity<?> validateOtp(@RequestParam String userId, @RequestParam String otp){
 
         String response = safeVaultUserService.validateOtp(userId, otp);
 
@@ -43,7 +44,7 @@ public class SafeVaultUserController {
     }
 
     @PostMapping("/regenerate-otp")
-    public ResponseEntity<?> regenerateOtp(@AuthenticationPrincipal String userId){
+    public ResponseEntity<?> regenerateOtp(@RequestParam String userId){
 
         String response = safeVaultUserService.regenerateOtp(userId);
 
@@ -62,6 +63,13 @@ public class SafeVaultUserController {
     public ResponseEntity<?> viewAllUser(@RequestParam int page , @RequestParam int size){
 
         List<UserResponseDto> response = safeVaultUserService.viewAllCustomers(page, size);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/set-passcode")
+    public ResponseEntity<?> setPasscode(@AuthenticationPrincipal String userId, @RequestBody SetPasscodeDto passcodeDto){
+        String response = safeVaultUserService.setPasscode(userId, passcodeDto);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
