@@ -103,7 +103,9 @@ public class UserServiceTest {
     @Test
     void testSetPasscode_ThrowExceptionIfPasscodesDoesNotMatch(){
 
-        SafeVaultException exception = assertThrows(SafeVaultException.class, ()->safeVaultUserService.setPasscode("661908db349dd6078964982c", "121323", "12132324444"));
+        SetPasscodeDto dto = SetPasscodeDto.builder().passcode("121323").confirmPasscode("2344332").build();
+
+        SafeVaultException exception = assertThrows(SafeVaultException.class, ()->safeVaultUserService.setPasscode("661908db349dd6078964982c", dto));
         assertThat(exception.getMessage(), is("Passcodes must match"));
     }
 

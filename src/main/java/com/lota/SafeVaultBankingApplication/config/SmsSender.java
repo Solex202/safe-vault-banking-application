@@ -44,7 +44,7 @@ public class SmsSender {
         Message message = Message.creator(
                         new PhoneNumber(phoneNumber),
                         new PhoneNumber("+13343578207"),
-                        "Here is me testing my app and also reminding you that lota loves you so much, enjoy the rest of your day dee: " + token)
+                        token)
                 .create();
 
         System.out.println("Message sent successfully. SID: " + message.getSid());

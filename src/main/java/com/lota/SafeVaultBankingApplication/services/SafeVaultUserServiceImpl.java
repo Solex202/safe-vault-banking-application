@@ -1,6 +1,7 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
+import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
@@ -163,13 +164,13 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
 
     @Override
-    public String setPasscode(String userId, String passcode, String confirmPasscode) {
+    public String setPasscode(String userId, SetPasscodeDto passcodeDto) {
 
         SafeVaultUser user = findUserById(userId);
 
-        validatePasscode(passcode, confirmPasscode);
+        validatePasscode(passcodeDto.getPasscode(), passcodeDto.getConfirmPasscode());
 
-        String hashedPassword = hashPassword(passcode);
+        String hashedPassword = hashPassword(passcodeDto.getPasscode());
         user.setPasscode(hashedPassword);
 
         userRepository.save(user);
