@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -132,14 +133,18 @@ public class TransactionServiceImpl  implements TransactionService {
 
     public Page<ViewTransactionResponseDto> viewAllTransactions(int page, int size){
         Pageable pageRequest = paginateDataWith(page, size);
-        Page<Transaction> userList = transactionRepository.findAll(pageRequest);
+        Page<Transaction> transactions = transactionRepository.findAll(pageRequest);
 
-        return buildTransactionResponseFrom(userList);
+        List<ViewTransactionResponseDto> responseDtoList = buildTransactionResponseFrom(transactions);
+
+        return new PageImpl<>(responseDtoList, pageRequest, responseDtoList.size());
     }
 
-    private Page<ViewTransactionResponseDto> buildTransactionResponseFrom(Page<Transaction> transactions) {
+    private List<ViewTransactionResponseDto> buildTransactionResponseFrom(Page<Transaction> transactions) {
 
-        return transactions
-                .map(transaction -> mapper.map(transaction, ViewTransactionResponseDto.class));
+        return transactions.getContent()
+                .stream()
+                .map(transaction -> mapper.map(transaction, ViewTransactionResponseDto.class))
+                .toList();
     }
 }

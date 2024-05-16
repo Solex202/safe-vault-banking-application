@@ -34,7 +34,7 @@ public class TransactionUserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/view-transactions}")
+    @GetMapping("/view-transactions")
     public ResponseEntity<?> viewAllTransactions(@RequestParam int page, @RequestParam int size){
         Page<ViewTransactionResponseDto> responseDto = transactionService.viewAllTransactions(page, size);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
