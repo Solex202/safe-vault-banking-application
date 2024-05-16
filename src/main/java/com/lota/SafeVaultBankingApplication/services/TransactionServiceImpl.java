@@ -119,7 +119,6 @@ public class TransactionServiceImpl  implements TransactionService {
        return accountRepository.existsByAccountNumber(destinationAccountNumber);
     }
 
-
     @Override
     public ViewTransactionResponseDto viewTransaction(String transactionId){
         Transaction transaction = getTransaction(transactionId);
@@ -143,6 +142,4 @@ public class TransactionServiceImpl  implements TransactionService {
         return transactions
                 .map(transaction -> mapper.map(transaction, ViewTransactionResponseDto.class));
     }
-
-
 }
