@@ -9,6 +9,8 @@ public class SecurityUtils {
                 "/auth/login",
                 "/users",
                 "/users/process-phoneNumber",
+                "/users/view-all",
+                "/users/validate-otp",
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",

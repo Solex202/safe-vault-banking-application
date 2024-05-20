@@ -8,6 +8,7 @@ import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
@@ -118,8 +119,8 @@ public class UserServiceTest {
 
     @Test
     void testViewAllBankCustomerDetails(){
-        List<UserResponseDto> responseDto = safeVaultUserService.viewAllCustomers(1, 10);
+        Page<UserResponseDto> responseDto = safeVaultUserService.viewAllCustomers(1, 10);
 
-        assertThat(responseDto.size(), is(2));
+        assertThat(responseDto.getContent(), is(2));
     }
 }
