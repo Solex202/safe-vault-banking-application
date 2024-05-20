@@ -1,8 +1,10 @@
 package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
+import com.lota.SafeVaultBankingApplication.dtos.response.PaginatedResponse;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public interface SafeVaultUserService {
 
     UserResponseDto viewCustomer(String userId);
 
-    List<UserResponseDto> viewAllCustomers(int page, int size);
+    Page<UserResponseDto> viewAllCustomers(int page, int size);
 
     boolean isMethodEffectOccurred();
 

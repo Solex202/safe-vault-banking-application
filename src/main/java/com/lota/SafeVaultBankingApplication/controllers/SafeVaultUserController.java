@@ -1,10 +1,12 @@
 package com.lota.SafeVaultBankingApplication.controllers;
 
 import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
+import com.lota.SafeVaultBankingApplication.dtos.response.PaginatedResponse;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.services.SafeVaultUserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -62,7 +64,7 @@ public class SafeVaultUserController {
     @GetMapping("/view-all")
     public ResponseEntity<?> viewAllUser(@RequestParam int page , @RequestParam int size){
 
-        List<UserResponseDto> response = safeVaultUserService.viewAllCustomers(page, size);
+        Page<UserResponseDto> response = safeVaultUserService.viewAllCustomers(page, size);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
