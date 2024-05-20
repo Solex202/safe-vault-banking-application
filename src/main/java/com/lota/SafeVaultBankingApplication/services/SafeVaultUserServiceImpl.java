@@ -2,6 +2,7 @@ package com.lota.SafeVaultBankingApplication.services;
 
 import com.lota.SafeVaultBankingApplication.config.SmsSender;
 import com.lota.SafeVaultBankingApplication.dtos.request.SetPasscodeDto;
+import com.lota.SafeVaultBankingApplication.dtos.response.PaginatedResponse;
 import com.lota.SafeVaultBankingApplication.dtos.response.UserResponseDto;
 import com.lota.SafeVaultBankingApplication.exceptions.SafeVaultException;
 import com.lota.SafeVaultBankingApplication.models.SafeVaultUser;
@@ -12,8 +13,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -200,20 +200,22 @@ public class SafeVaultUserServiceImpl implements SafeVaultUserService, UserDetai
     }
 
     @Override
-    public List<UserResponseDto> viewAllCustomers(int page, int size){
-        Pageable pageRequest = paginateDataWith(page, size);
-        Page<SafeVaultUser> userList = userRepository.findAll(pageRequest);
+    public Page<UserResponseDto> viewAllCustomers(int page, int size){
+        Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
 
-        return buildCustomerResponseFrom(userList);
+        Page<SafeVaultUser> userList = userRepository.findAll(pageRequest);
+        List<UserResponseDto> userResponseDtos = buildCustomerResponseFrom(userList.getContent());
+
+        return new PageImpl<>(userResponseDtos, pageRequest, userList.getTotalElements());
+
     }
 
-    private List<UserResponseDto> buildCustomerResponseFrom(Page<SafeVaultUser> userList) {
+    private List<UserResponseDto> buildCustomerResponseFrom(List<SafeVaultUser> userList) {
 
-       return userList.getContent()
+       return userList
                .stream()
                .map(user -> mapper.map(user, UserResponseDto.class))
                .toList();
     }
-    //TODO: delete a user, return a string, necessary?
 
 }

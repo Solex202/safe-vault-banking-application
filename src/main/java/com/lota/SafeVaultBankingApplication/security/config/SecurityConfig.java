@@ -38,10 +38,10 @@ public class SecurityConfig {
                 .sessionManagement(c->c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAt(authenticationFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(new SafeVaultAuthorizationFilter(jwtService), SafeVaultAuthenticationFilter.class)
-                .authorizeHttpRequests(c->c.requestMatchers( "/auth/login", "/users/process-phoneNumber", "/v3/api-docs/**", "/v3/api-docs.yaml", "/h2-console/**").permitAll()
+                .authorizeHttpRequests(c->c.requestMatchers("/users/view-all", "/auth/login", "/users/process-phoneNumber","/users/validate-otp", "/v3/api-docs/**", "/v3/api-docs.yaml", "/h2-console/**").permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll())
-                .authorizeHttpRequests(c->c.requestMatchers(GET, "/api/v1/reservation").hasAnyAuthority(USER.name())
-                        .requestMatchers("/events", "/events**").hasAnyAuthority(USER.name()))
+                .authorizeHttpRequests(c->c.requestMatchers(GET, "/users/view-all").hasAnyAuthority(USER.name())
+                        .requestMatchers("/users", "/users**").hasAnyAuthority(USER.name()))
                 .authorizeHttpRequests(c->c.anyRequest().hasAnyAuthority(USER.name()))
                 .build();
     }
