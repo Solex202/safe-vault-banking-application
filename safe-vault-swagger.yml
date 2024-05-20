@@ -1,0 +1,65 @@
+swagger: "2.0"
+info:
+  title: Safe Vault API
+  description: This API allows customers to create , transfer and receive money and also do other banking transactions
+  version: 1.0.0
+host: localhost:9639
+schemes:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /auth:
+    post:
+      summary: Authenticate a user.
+      description: This endpoint allows users to authenticate and receive a Bearer token.
+      parameters:
+        - in: body
+          name: credentials
+          description: The user's credentials.
+          schema:
+            $ref: '#/definitions/Credentials'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Authorization:
+              type: string
+        '401':
+          description: Unauthorized
+      tags:
+        - users
+
+  
+definitions:
+  User:
+    type: object
+    required:
+      - name
+      - email
+      - password
+    properties:
+      name:
+        type: string
+        maxLength: 100
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        minLength: 8
+  Credentials:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        minLength: 8
