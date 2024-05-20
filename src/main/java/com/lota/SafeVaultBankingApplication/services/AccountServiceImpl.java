@@ -93,6 +93,6 @@ public class AccountServiceImpl implements AccountService{
         // Perform the update for all documents
         mongoTemplate.updateMulti(query, update, Account.class);
 
-        System.out.println("Daily transfer amount reset for all accounts.");
+        log.info("Daily transfer amount reset for all accounts.");
     }
 }
